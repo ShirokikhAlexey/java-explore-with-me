@@ -37,7 +37,8 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     private List<Event> events;
 
-    public Category() {}
+    public Category() {
+    }
 
     public Category(Integer id, String name) {
         this.id = id;

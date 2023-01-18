@@ -1,7 +1,6 @@
 package ru.prakticum.ewm.admin;
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.prakticum.ewm.category.CategoryRepository;
 import ru.prakticum.ewm.category.dto.CategoryDto;
@@ -13,13 +12,9 @@ import ru.prakticum.ewm.compilation.dto.CompilationDtoMapper;
 import ru.prakticum.ewm.compilation.dto.CompilationShortDto;
 import ru.prakticum.ewm.compilation.model.Compilation;
 import ru.prakticum.ewm.event.EventRepository;
-import ru.prakticum.ewm.event.RequestRepository;
 import ru.prakticum.ewm.event.dto.EventDto;
 import ru.prakticum.ewm.event.dto.EventMapper;
-import ru.prakticum.ewm.event.dto.RequestDto;
 import ru.prakticum.ewm.event.model.Event;
-import ru.prakticum.ewm.event.model.Request;
-import ru.prakticum.ewm.event.model.RequestStatus;
 import ru.prakticum.ewm.event.model.Status;
 import ru.prakticum.ewm.exception.InvalidEventException;
 import ru.prakticum.ewm.exception.NotFoundException;
@@ -127,7 +122,7 @@ public class AdminServiceImpl implements AdminService {
             throw new InvalidEventException("Invalid event");
         }
         Category category = categoryOptional.get();
-        if(!category.getEvents().isEmpty()){
+        if (!category.getEvents().isEmpty()) {
             throw new InvalidEventException("Invalid event");
         }
         categoryRepository.delete(category);
@@ -136,15 +131,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<UserDto> searchUsers(List<Integer> users, Integer from, Integer size) {
         List<UserDto> usersDtos = new ArrayList<>();
-        if(users != null) {
+        if (users != null) {
             List<User> usersObjects = userRepository.searchUsers(users, PageRequest.of(from / size, size));
-            for(User u : usersObjects) {
+            for (User u : usersObjects) {
                 usersDtos.add(UserDtoMapper.toDto(u));
             }
             return usersDtos;
         }
         List<User> usersObjects = userRepository.searchUsers(PageRequest.of(from / size, size));
-        for(User u : usersObjects) {
+        for (User u : usersObjects) {
             usersDtos.add(UserDtoMapper.toDto(u));
         }
         return usersDtos;
@@ -191,8 +186,8 @@ public class AdminServiceImpl implements AdminService {
         }
         Compilation compilation = compilationOptional.get();
         List<Event> newEvents = new ArrayList<>();
-        for(Event e:compilation.getEvents()) {
-            if(!Objects.equals(e.getId(), eventId)) {
+        for (Event e : compilation.getEvents()) {
+            if (!Objects.equals(e.getId(), eventId)) {
                 newEvents.add(e);
             }
         }

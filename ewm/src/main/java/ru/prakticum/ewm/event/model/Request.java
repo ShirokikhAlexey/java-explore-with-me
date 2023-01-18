@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import ru.prakticum.ewm.user.model.User;
 
 import javax.persistence.*;
@@ -49,5 +48,6 @@ public class Request {
         this.user = user;
     }
 
-    public Request(){}
+    public Request() {
+    }
 }

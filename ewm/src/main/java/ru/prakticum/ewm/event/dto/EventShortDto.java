@@ -3,7 +3,6 @@ package ru.prakticum.ewm.event.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import ru.prakticum.ewm.category.dto.CategoryDto;
 import ru.prakticum.ewm.user.dto.UserShortDto;
 

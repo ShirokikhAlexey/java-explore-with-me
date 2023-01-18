@@ -4,12 +4,10 @@ import ru.prakticum.ewm.category.dto.CategoryDto;
 import ru.prakticum.ewm.compilation.dto.CompilationDto;
 import ru.prakticum.ewm.compilation.dto.CompilationShortDto;
 import ru.prakticum.ewm.event.dto.EventDto;
-import ru.prakticum.ewm.event.dto.RequestDto;
 import ru.prakticum.ewm.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.LongSummaryStatistics;
 
 public interface AdminService {
     List<EventDto> search(List<Integer> users, List<String> states, List<Integer> categories,

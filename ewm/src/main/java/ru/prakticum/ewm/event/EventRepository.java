@@ -1,9 +1,9 @@
 package ru.prakticum.ewm.event;
 
 import org.springframework.data.domain.Pageable;
-import ru.prakticum.ewm.event.model.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import ru.prakticum.ewm.event.model.Event;
 
 import java.util.List;
 

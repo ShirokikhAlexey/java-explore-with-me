@@ -10,11 +10,10 @@ import java.util.List;
 
 public class CompilationDtoMapper {
     public static CompilationDto toDto(Compilation compilation) {
-        List<EventShortDto> events = new ArrayList<EventShortDto>();
+        List<EventShortDto> events = new ArrayList<>();
         for (Event e : compilation.getEvents()) {
             events.add(EventMapper.toDtoShort(e, null));
         }
-        System.out.println("\n\n\n\n\n\n"+events+"\n\n\n\n");
         return new CompilationDto(compilation.getId(), compilation.getName(), compilation.getShow_on_main(), events);
     }
 
