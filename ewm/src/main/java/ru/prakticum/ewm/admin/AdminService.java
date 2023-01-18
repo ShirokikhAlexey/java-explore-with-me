@@ -39,9 +39,9 @@ public interface AdminService {
 
     void deleteCompilation(Integer compilationId);
 
-    void deleteCompilationEvent(Integer compilationId, Integer eventId);
+    CompilationDto deleteCompilationEvent(Integer compilationId, Integer eventId);
 
-    void addEventCompilation(Integer compilationId, Integer eventId);
+    CompilationDto addEventCompilation(Integer compilationId, Integer eventId);
 
     void pinCompilation(Integer compilationId);
 

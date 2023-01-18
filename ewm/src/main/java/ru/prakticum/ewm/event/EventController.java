@@ -2,7 +2,9 @@ package ru.prakticum.ewm.event;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import ru.prakticum.ewm.event.dto.EventDto;
 import ru.prakticum.ewm.event.dto.EventShortDto;
 
 import javax.validation.ValidationException;
@@ -20,8 +22,10 @@ public class EventController {
     public List<EventShortDto> getState(@RequestParam(required = false) String text,
                                         @RequestParam(required = false) List<Integer> categories,
                                         @RequestParam(required = false) Boolean paid,
-                                        @RequestParam(required = false) LocalDateTime rangeStart,
-                                        @RequestParam(required = false) LocalDateTime rangeEnd,
+                                        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                            @RequestParam(required = false) LocalDateTime rangeStart,
+                                        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                            @RequestParam(required = false) LocalDateTime rangeEnd,
                                         @RequestParam(required = false) Boolean onlyAvailable,
                                         @RequestParam(required = false) String sort,
                                         @RequestParam(defaultValue = "1", required = false) Integer from,
@@ -34,7 +38,7 @@ public class EventController {
     }
 
     @GetMapping(value = "/{eventId}")
-    public EventShortDto get(@PathVariable int eventId) {
+    public EventDto get(@PathVariable int eventId) {
         return eventService.getShort(eventId);
     }
 }

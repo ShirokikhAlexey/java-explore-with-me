@@ -66,7 +66,7 @@ public class AdminServiceImpl implements AdminService {
     public EventDto update(Integer eventId, EventDto eventDto) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         Event event = eventOptional.get();
         return EventMapper.toDto(eventRepository.save(EventMapper.updateEvent(event, eventDto)));
@@ -76,11 +76,11 @@ public class AdminServiceImpl implements AdminService {
     public EventDto publish(Integer eventId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty() || eventOptional.get().getState() != Status.PENDING) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         Event event = eventOptional.get();
         if (event.getEventDate().minusHours(1).isBefore(LocalDateTime.now())) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
 
         event.setState(Status.PUBLISHED);
@@ -91,8 +91,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public EventDto reject(Integer eventId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
-        if (eventOptional.isEmpty() || eventOptional.get().getState() != Status.PUBLISHED) {
-            throw new InvalidEventException();
+        if (eventOptional.isEmpty()) {
+            throw new NotFoundException("Event not found");
+        }
+        if (eventOptional.get().getState() != Status.PENDING) {
+            throw new InvalidEventException("Event status " + eventOptional.get().getState().name());
         }
         Event event = eventOptional.get();
 
@@ -107,9 +110,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public CategoryDto updateCategory(CategoryDto categoryDto) {
+        if (categoryDto.getId() == null) {
+            throw new InvalidEventException("");
+        }
         Optional<Category> categoryOptional = categoryRepository.findById(categoryDto.getId());
         if (categoryOptional.isEmpty()) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         return CategoryDtoMapper.toDto(categoryRepository.save(CategoryDtoMapper.updateFromDto(categoryOptional.get(), categoryDto)));
     }
@@ -118,11 +124,11 @@ public class AdminServiceImpl implements AdminService {
     public void deleteCategory(Integer categoryId) {
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
         if (categoryOptional.isEmpty()) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         Category category = categoryOptional.get();
         if(!category.getEvents().isEmpty()){
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         categoryRepository.delete(category);
     }
@@ -153,7 +159,7 @@ public class AdminServiceImpl implements AdminService {
     public void deleteUser(Integer userId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         User user = userOptional.get();
         userRepository.delete(user);
@@ -171,17 +177,17 @@ public class AdminServiceImpl implements AdminService {
     public void deleteCompilation(Integer compilationId) {
         Optional<Compilation> compilationOptional = compilationRepository.findById(compilationId);
         if (compilationOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Compilation compilation = compilationOptional.get();
         compilationRepository.delete(compilation);
     }
 
     @Override
-    public void deleteCompilationEvent(Integer compilationId, Integer eventId) {
+    public CompilationDto deleteCompilationEvent(Integer compilationId, Integer eventId) {
         Optional<Compilation> compilationOptional = compilationRepository.findById(compilationId);
         if (compilationOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Compilation compilation = compilationOptional.get();
         List<Event> newEvents = new ArrayList<>();
@@ -191,34 +197,34 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         compilation.setEvents(newEvents);
-        compilationRepository.save(compilation);
+        return CompilationDtoMapper.toDto(compilationRepository.save(compilation));
     }
 
     @Override
-    public void addEventCompilation(Integer compilationId, Integer eventId) {
+    public CompilationDto addEventCompilation(Integer compilationId, Integer eventId) {
         Optional<Compilation> compilationOptional = compilationRepository.findById(compilationId);
         if (compilationOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Compilation compilation = compilationOptional.get();
 
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Event event = eventOptional.get();
 
-        List<Event> events = compilation.getEvents();
+        List<Event> events = new ArrayList<>(compilation.getEvents());
         events.add(event);
         compilation.setEvents(events);
-        compilationRepository.save(compilation);
+        return CompilationDtoMapper.toDto(compilationRepository.save(compilation));
     }
 
     @Override
     public void pinCompilation(Integer compilationId) {
         Optional<Compilation> compilationOptional = compilationRepository.findById(compilationId);
         if (compilationOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Compilation compilation = compilationOptional.get();
         compilation.setShow_on_main(true);
@@ -229,7 +235,7 @@ public class AdminServiceImpl implements AdminService {
     public void unpinCompilation(Integer compilationId) {
         Optional<Compilation> compilationOptional = compilationRepository.findById(compilationId);
         if (compilationOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Compilation compilation = compilationOptional.get();
         compilation.setShow_on_main(false);

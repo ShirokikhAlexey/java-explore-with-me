@@ -24,11 +24,15 @@ public class UserController {
 
     @PatchMapping(value = "/{userId}/events")
     public EventDto update(@PathVariable int userId, @RequestBody EventDto eventDto) {
+        if (eventDto.getEventId() != null) {
+            eventDto.setId(eventDto.getEventId());
+        }
         return userService.updateUserEvent(userId, eventDto);
     }
 
     @PostMapping(value = "/{userId}/events")
     public EventDto save(@PathVariable int userId, @RequestBody EventDto eventDto) {
+        System.out.println(eventDto.toString());
         return userService.saveUserEvent(userId, eventDto);
     }
 
@@ -67,7 +71,7 @@ public class UserController {
         return userService.addUserRequest(userId, eventId);
     }
 
-    @PatchMapping(value = "/{userId}/requests/{requestId}")
+    @PatchMapping(value = "/{userId}/requests/{requestId}/cancel")
     public RequestDto cancelUserRequest(@PathVariable int userId, @PathVariable Integer requestId) {
         return userService.cancelUserRequest(userId, requestId);
     }

@@ -1,9 +1,14 @@
 package ru.prakticum.ewm.exception;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@RequiredArgsConstructor
 public class ErrorResponse {
     private final List<String> errors;
     private final String message;
@@ -25,9 +30,5 @@ public class ErrorResponse {
         this.reason = reason;
         this.status = status;
         this.timestamp = timestamp;
-    }
-
-    public ErrorResponse getError() {
-        return this;
     }
 }

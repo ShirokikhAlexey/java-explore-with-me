@@ -13,4 +13,12 @@ public class CategoryDto {
         this.id = id;
         this.name = name;
     }
+
+    public CategoryDto(String name) {
+        this.name = name;
+    }
+
+    public CategoryDto(Integer id) {
+        this.id = id;
+    }
 }

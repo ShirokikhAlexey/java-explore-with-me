@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto get(Integer categoryId) {
         Optional<Category> category = repository.findById(categoryId);
         if(category.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         return CategoryDtoMapper.toDto(category.get());
     }

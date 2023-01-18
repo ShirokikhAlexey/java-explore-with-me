@@ -50,28 +50,29 @@ public class UserServiceImpl implements UserService {
     public EventDto updateUserEvent(Integer userId, EventDto eventDto) {
         Optional<Event> eventOptional = eventRepository.findById(eventDto.getId());
         if (eventOptional.isEmpty()) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         Event event = eventOptional.get();
         if (!Objects.equals(event.getInitiator().getId(), userId) ||
                 event.getState() != Status.PENDING && event.getState() != Status.CANCELED ||
                 event.getEventDate().minusHours(2).isBefore(LocalDateTime.now())) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
 
         eventDto.setState(Status.PENDING);
-        return EventMapper.toDto(eventRepository.save(EventMapper.updateEvent(event, eventDto)));
+        Event event1 = EventMapper.updateEvent(event, eventDto);
+        return EventMapper.toDto(eventRepository.save(event1));
     }
 
     @Override
     public EventDto saveUserEvent(Integer userId, EventDto eventDto) {
         Optional<User> initiatorOptional = userRepository.findById(userId);
         if (initiatorOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         User initiator = initiatorOptional.get();
         if (eventDto.getEventDate().minusHours(2).isBefore(LocalDateTime.now())) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         eventDto.setInitiator(UserDtoMapper.toDtoShort(initiator));
         eventDto.setState(Status.PENDING);
@@ -82,10 +83,10 @@ public class UserServiceImpl implements UserService {
     public EventDto getUserEvent(Integer userId, Integer eventId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         if (!Objects.equals(eventOptional.get().getInitiator().getId(), userId)) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         return EventMapper.toDto(eventOptional.get());
     }
@@ -93,11 +94,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public EventDto cancelUserEvent(Integer userId, Integer eventId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
-        if (eventOptional.isEmpty() || eventOptional.get().getState() != Status.PUBLISHED) {
-            throw new InvalidEventException();
+        if (eventOptional.isEmpty()) {
+            throw new NotFoundException("Event not found");
+        }
+        if (eventOptional.get().getState() != Status.PENDING) {
+            throw new InvalidEventException("Invalid event status " + eventOptional.get().getState().name());
         }
         if (!Objects.equals(eventOptional.get().getInitiator().getId(), userId)) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Event event = eventOptional.get();
         event.setState(Status.CANCELED);
@@ -108,10 +112,10 @@ public class UserServiceImpl implements UserService {
     public List<RequestDto> getUserEventRequests(Integer userId, Integer eventId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         if (!Objects.equals(eventOptional.get().getInitiator().getId(), userId)) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         List<RequestDto> response = new ArrayList<>();
         for(Request r : eventOptional.get().getRequests()) {
@@ -124,26 +128,26 @@ public class UserServiceImpl implements UserService {
     public RequestDto approveRequest(Integer userId, Integer eventId, Integer requestId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         if (!Objects.equals(eventOptional.get().getInitiator().getId(), userId)) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Long currentApproved = eventRepository.getApprovedCount(eventId);
         if (Objects.equals(Math.toIntExact(currentApproved), eventOptional.get().getParticipantLimit())) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
 
         Optional<Request> requestOptional = requestRepository.findById(requestId);
         if (requestOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Request request = requestOptional.get();
-        request.setStatus(RequestStatus.APPROVED);
+        request.setStatus(RequestStatus.CONFIRMED);
 
         if (Objects.equals(Math.toIntExact(currentApproved) + 1, eventOptional.get().getParticipantLimit())) {
             for (Request r: requestRepository.getEventRequestsPending(eventId)) {
-                r.setStatus(RequestStatus.DECLINED);
+                r.setStatus(RequestStatus.REJECTED);
                 requestRepository.save(r);
             }
         }
@@ -154,18 +158,18 @@ public class UserServiceImpl implements UserService {
     public RequestDto rejectRequest(Integer userId, Integer eventId, Integer requestId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         if (!Objects.equals(eventOptional.get().getInitiator().getId(), userId)) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
 
         Optional<Request> requestOptional = requestRepository.findById(requestId);
         if (requestOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Request request = requestOptional.get();
-        request.setStatus(RequestStatus.DECLINED);
+        request.setStatus(RequestStatus.REJECTED);
 
         return EventMapper.requestToDto(request);
     }
@@ -174,7 +178,7 @@ public class UserServiceImpl implements UserService {
     public List<RequestDto> getUserRequests(Integer userId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         List<RequestDto> response = new ArrayList<>();
         for(Request r : requestRepository.getUserRequests(userId)) {
@@ -187,25 +191,25 @@ public class UserServiceImpl implements UserService {
     public RequestDto addUserRequest(Integer userId, Integer eventId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         User user = userOptional.get();
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         Event event = eventOptional.get();
         if (Objects.equals(event.getInitiator().getId(), userId)) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         if (!event.getRequestModeration()) {
-            return EventMapper.requestToDto(requestRepository.save(new Request(user, event, RequestStatus.APPROVED)));
+            return EventMapper.requestToDto(requestRepository.save(new Request(user, event, RequestStatus.CONFIRMED)));
         }
 
         Long currentApproved = eventRepository.getApprovedCount(eventId);
         if (Objects.equals(Math.toIntExact(currentApproved), event.getParticipantLimit()) ||
                 event.getState() != Status.PUBLISHED) {
-            throw new InvalidEventException();
+            throw new InvalidEventException("Invalid event");
         }
         return EventMapper.requestToDto(requestRepository.save(new Request(user, event, RequestStatus.PENDING)));
     }
@@ -214,11 +218,11 @@ public class UserServiceImpl implements UserService {
     public RequestDto cancelUserRequest(Integer userId, Integer requestId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Optional<Request> requestOptional = requestRepository.findById(requestId);
         if (requestOptional.isEmpty() || !Objects.equals(requestOptional.get().getUser().getId(), userId)) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         Request request = requestOptional.get();
         request.setStatus(RequestStatus.CANCELED);

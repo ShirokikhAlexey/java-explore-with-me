@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import ru.prakticum.ewm.category.model.Category;
 import ru.prakticum.ewm.compilation.model.Compilation;
 import ru.prakticum.ewm.user.model.User;
@@ -15,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@DynamicInsert
 @Table(name = "events")
 public class Event {
     @NonNull
@@ -34,10 +37,11 @@ public class Event {
 
     @NonNull
     @Column(name = "dtc", columnDefinition = "TIMESTAMP", insertable = false)
+    @ColumnDefault("current_timestamp")
     private LocalDateTime createdOn;
 
     @NonNull
-    @Column(name = "start", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "start", columnDefinition = "TIMESTAMP")
     private LocalDateTime eventDate;
 
     @Id
@@ -54,31 +58,36 @@ public class Event {
     private List<Location> locations;
 
     @NonNull
-    @Column(name = "paid", nullable = false)
+    @Column(name = "paid")
+    @ColumnDefault("true")
     private Boolean paid;
 
     @NonNull
-    @Column(name = "users_limit", nullable = false)
+    @Column(name = "users_limit")
+    @ColumnDefault("0")
     private Integer participantLimit;
 
     @NonNull
-    @Column(name = "published", columnDefinition = "TIMESTAMP", insertable = false)
+    @Column(name = "published", columnDefinition = "TIMESTAMP")
+    @ColumnDefault("current_timestamp")
     private LocalDateTime publishedOn;
 
     @NonNull
-    @Column(name = "moderation_required", nullable = false)
+    @Column(name = "moderation_required")
+    @ColumnDefault("true")
     private Boolean requestModeration;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private Status state;
 
     @NonNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String title;
 
     @NonNull
-    @Column(name = "views", nullable = false)
+    @Column(name = "views")
+    @ColumnDefault("0")
     private Integer views;
 
     @ManyToMany()
@@ -114,5 +123,25 @@ public class Event {
         this.paid = paid;
         this.title = title;
         this.views = views;
+    }
+
+    public Event(Integer id, String annotation, String description,
+                 List<Category> categories, LocalDateTime eventDate, User initiator,
+                 Boolean paid, String title, Integer views, LocalDateTime createdOn, Status status, Integer participantLimit,
+                 Location location, Boolean requestModeration) {
+        this.id = id;
+        this.annotation = annotation;
+        this.description = description;
+        this.categories = categories;
+        this.eventDate = eventDate;
+        this.initiator = initiator;
+        this.paid = paid;
+        this.title = title;
+        this.views = views;
+        this.createdOn = createdOn;
+        this.state = status;
+        this.participantLimit = participantLimit;
+        this.locations = List.of(location);
+        this.requestModeration = requestModeration;
     }
 }

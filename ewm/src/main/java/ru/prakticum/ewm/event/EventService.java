@@ -16,5 +16,5 @@ public interface EventService {
                                           LocalDateTime rangeEnd, Boolean onlyAvailable, String sort, Integer from,
                                           Integer size);
 
-    EventShortDto getShort(Integer eventId);
+    EventDto getShort(Integer eventId);
 }

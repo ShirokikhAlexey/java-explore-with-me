@@ -32,7 +32,7 @@ public class CompilationServiceImpl implements CompilationService{
     public CompilationDto get(Integer compilationId) {
         Optional<Compilation> compilation = repository.findById(compilationId);
         if(compilation.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Not found");
         }
         return CompilationDtoMapper.toDto(compilation.get());
     }

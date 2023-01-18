@@ -2,6 +2,7 @@ package ru.prakticum.ewm.admin;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.prakticum.ewm.category.dto.CategoryDto;
 import ru.prakticum.ewm.compilation.dto.CompilationDto;
@@ -24,8 +25,10 @@ public class AdminController {
     public List<EventDto> get(@RequestParam(required = false) List<Integer> users,
                               @RequestParam(required = false) List<String> states,
                               @RequestParam(required = false) List<Integer> categories,
-                              @RequestParam(required = false) LocalDateTime rangeStart,
-                              @RequestParam(required = false) LocalDateTime rangeEnd,
+                              @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                  @RequestParam(required = false) LocalDateTime rangeStart,
+                              @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                  @RequestParam(required = false) LocalDateTime rangeEnd,
                               @RequestParam(defaultValue = "1", required = false) Integer from,
                               @RequestParam(defaultValue = "10", required = false) Integer size) {
         return adminService.search(users, states, categories, rangeStart, rangeEnd, from, size);
@@ -89,13 +92,13 @@ public class AdminController {
     }
 
     @DeleteMapping(value = "/compilations/{compilationId}/events/{eventId}")
-    public void deleteCompilationEvent(@PathVariable int compilationId, @PathVariable int eventId) {
-        adminService.deleteCompilationEvent(compilationId, eventId);
+    public CompilationDto deleteCompilationEvent(@PathVariable int compilationId, @PathVariable int eventId) {
+        return adminService.deleteCompilationEvent(compilationId, eventId);
     }
 
     @PatchMapping(value = "/compilations/{compilationId}/events/{eventId}")
-    public void addCompilationEvent(@PathVariable int compilationId, @PathVariable int eventId) {
-        adminService.addEventCompilation(compilationId, eventId);
+    public CompilationDto addCompilationEvent(@PathVariable int compilationId, @PathVariable int eventId) {
+        return adminService.addEventCompilation(compilationId, eventId);
     }
 
     @PatchMapping(value = "/compilations/{compilationId}/pin")

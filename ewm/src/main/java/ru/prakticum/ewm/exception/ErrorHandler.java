@@ -1,10 +1,11 @@
 package ru.prakticum.ewm.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.hibernate.PropertyValueException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
@@ -15,59 +16,52 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class ErrorHandler {
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleException(Throwable exception) {
-        log.error(exception.getMessage());
-        return new ErrorResponse(exception.getMessage(), exception.getCause().toString(), HttpStatus.BAD_REQUEST.name(),
-                LocalDateTime.now());
+    @ExceptionHandler(InvalidEventException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidItem(final InvalidEventException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.BAD_REQUEST.name(),
+                LocalDateTime.now()));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleInvalidItem(final InvalidEventException e) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundException(final NotFoundException e) {
         log.error(e.getMessage());
-        return new ErrorResponse(e.getMessage(), e.getCause().toString(), HttpStatus.BAD_REQUEST.name(),
-                LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.BAD_REQUEST.name(),
+                LocalDateTime.now()));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleNotFoundException(final NotFoundException e) {
+    @ExceptionHandler(PropertyValueException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(final PropertyValueException e) {
         log.error(e.getMessage());
-        return new ErrorResponse(e.getMessage(), e.getCause().toString(), HttpStatus.NOT_FOUND.name(),
-                LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.BAD_REQUEST.name(),
+                LocalDateTime.now()));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBadRequest(final PropertyValueException e) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequestAttributes(final IllegalArgumentException e) {
         log.error(e.getMessage());
-        return new ErrorResponse(e.getMessage(), e.getCause().toString(), HttpStatus.BAD_REQUEST.name(),
-                LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.BAD_REQUEST.name(),
+                LocalDateTime.now()));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBadRequestAttributes(final IllegalArgumentException e) {
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequestAttributes(final ConstraintViolationException e) {
         log.error(e.getMessage());
-        return new ErrorResponse(e.getMessage(), e.getCause().toString(), HttpStatus.BAD_REQUEST.name(),
-                LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.BAD_REQUEST.name(),
+                LocalDateTime.now()));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleBadRequestAttributes(final ConstraintViolationException e) {
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(final ValidationException e) {
         log.error(e.getMessage());
-        return new ErrorResponse(e.getMessage(), e.getCause().toString(), HttpStatus.CONFLICT.name(),
-                LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.BAD_REQUEST.name(),
+                LocalDateTime.now()));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationException(final ValidationException e) {
+    @ExceptionHandler(JdbcSQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> dataDuplicates(final JdbcSQLIntegrityConstraintViolationException e) {
         log.error(e.getMessage());
-        return new ErrorResponse(e.getMessage(), e.getCause().toString(), HttpStatus.BAD_REQUEST.name(),
-                LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse("Data duplicates", "Error", HttpStatus.CONFLICT.name(),
+                LocalDateTime.now()));
     }
 }

@@ -23,7 +23,7 @@ public class Compilation {
     private String name;
 
     @NonNull
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
     @NonNull
@@ -38,7 +38,12 @@ public class Compilation {
     @Column(name = "dtu", columnDefinition = "TIMESTAMP", insertable = false)
     private LocalDateTime dtu;
 
-    @ManyToMany(mappedBy = "compilations")
+    @ManyToMany()
+    @JoinTable(
+            name = "event_collection",
+            joinColumns = {@JoinColumn(name = "collection_id")},
+            inverseJoinColumns = {@JoinColumn(name = "event_id")}
+    )
     private List<Event> events;
 
     public Compilation() {}
