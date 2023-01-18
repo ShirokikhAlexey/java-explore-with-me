@@ -110,7 +110,6 @@ public class Event {
     private List<Request> requests;
 
     public Event() {
-        
     }
 
     public Event(Integer id, String annotation, String description,
