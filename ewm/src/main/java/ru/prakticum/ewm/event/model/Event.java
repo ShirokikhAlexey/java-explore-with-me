@@ -109,7 +109,9 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<Request> requests;
 
-    public Event() {}
+    public Event() {
+        
+    }
 
     public Event(Integer id, String annotation, String description,
                  List<Category> categories, LocalDateTime eventDate, User initiator,
