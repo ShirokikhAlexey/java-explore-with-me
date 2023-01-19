@@ -23,7 +23,7 @@ public class CompilationRepositoryCustomImpl implements CompilationRepositoryCus
         Root<Compilation> root = criteriaQuery.from(Compilation.class);
         criteriaQuery.select(root);
 
-        Predicate predicatePinned = cb.equal(root.get("show_on_main"), pinned);
+        Predicate predicatePinned = cb.equal(root.get("showOnMain"), pinned);
         Predicate predicate = cb.and();
         if (pinned != null) {
             predicate = cb.and(predicate, predicatePinned);
