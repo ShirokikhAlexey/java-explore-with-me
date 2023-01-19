@@ -6,8 +6,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.prakticum.stat.event.dto.EventDto;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -25,7 +30,11 @@ public class EventController {
                                          LocalDateTime end,
                                  @RequestParam(defaultValue = "", required = false) List<String> uris,
                                  @RequestParam(defaultValue = "false", required = false) boolean unique) {
-        return eventService.getStatistics(start, end, uris, unique);
+        List<String> test = new ArrayList<>();
+        for (String uri : uris) {
+            test.add(uri.strip());
+        }
+        return eventService.getStatistics(start, end, test, unique);
     }
 
     @PostMapping("hit")

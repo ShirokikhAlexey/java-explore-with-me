@@ -29,15 +29,14 @@ public class EventServiceImpl implements EventService {
         List<Event> events;
         List<EventDto> eventDtos = new ArrayList<>();
         HashMap<String, HashMap<String, Integer>> counter = new HashMap<>();
-
         if (uris.isEmpty() && unique) {
             events = repository.getStatisticsUnique(start, end);
         } else if (uris.isEmpty()) {
             events = repository.getStatistics(start, end);
         } else if (unique) {
-            events = repository.getStatisticsWithUrisUnique(start, end, uris);
+            events = repository.getStatisticsWithUris(start, end, uris, true);
         } else {
-            events = repository.getStatisticsWithUris(start, end, uris);
+            events = repository.getStatisticsWithUris(start, end, uris, false);
         }
         for (Event event : events) {
             if (counter.containsKey(event.getApp())) {
