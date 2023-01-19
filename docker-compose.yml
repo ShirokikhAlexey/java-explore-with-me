@@ -1,11 +1,11 @@
 version: '3.1'
 services:
   stats-server:
-    build: stat/.
+    build: ./stat
     ports:
       - "9090:9090"
 
   ewm-service:
-    build: ewm/.
+    build: ./ewm
     ports:
       - "8080:8080"
