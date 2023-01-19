@@ -3,6 +3,7 @@ package ru.prakticum.ewm.user;
 import ru.prakticum.ewm.event.dto.EventDto;
 import ru.prakticum.ewm.event.dto.RequestDto;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 public interface UserService {

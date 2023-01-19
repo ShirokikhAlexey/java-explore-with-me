@@ -28,7 +28,7 @@ public class Compilation {
 
     @NonNull
     @Column(name = "show_on_main", nullable = false)
-    private Boolean showOnMain;
+    private Boolean show_on_main;
 
     @NonNull
     @Column(name = "dtc", columnDefinition = "TIMESTAMP", insertable = false)
@@ -46,13 +46,12 @@ public class Compilation {
     )
     private List<Event> events;
 
-    public Compilation() {
-    }
+    public Compilation() {}
 
-    public Compilation(Integer id, String title, Boolean pinned, List<Event> events) {
+    public Compilation(Integer id, String title, Boolean pinned,List<Event> events) {
         this.id = id;
         this.name = title;
-        this.showOnMain = pinned;
+        this.show_on_main = pinned;
         this.events = events;
     }
 }

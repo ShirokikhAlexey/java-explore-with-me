@@ -37,8 +37,7 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Event> events;
 
-    public User() {
-    }
+    public User() {}
 
     public User(Integer id, String name, String email) {
         this.id = id;

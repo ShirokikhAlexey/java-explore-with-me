@@ -2,11 +2,13 @@ package ru.prakticum.ewm.category;
 
 import org.springframework.stereotype.Service;
 import ru.prakticum.ewm.category.model.Category;
+import ru.prakticum.ewm.compilation.model.Compilation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 

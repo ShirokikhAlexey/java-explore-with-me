@@ -15,7 +15,7 @@ public class EventDto {
     private String ip;
     private Integer hits;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 
     EventDto(String app, String uri, String ip, LocalDateTime timestamp) {

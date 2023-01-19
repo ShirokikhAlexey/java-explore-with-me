@@ -48,10 +48,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDto getShort(Integer eventId) {
         Optional<Event> event = repository.findById(eventId);
-        if (event.isEmpty()) {
+        if(event.isEmpty()) {
             throw new EventNotFoundException("Not found");
         }
-        if (event.get().getState() != Status.PUBLISHED) {
+        if(event.get().getState() != Status.PUBLISHED) {
             throw new InvalidEventException("Invalid event");
         }
         Long confirmed = repository.getApprovedCount(eventId);

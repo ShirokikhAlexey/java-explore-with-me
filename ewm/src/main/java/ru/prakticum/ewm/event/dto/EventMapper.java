@@ -58,38 +58,38 @@ public class EventMapper {
     }
 
     public static Event updateEvent(Event event, EventDto eventDto) {
-        if (eventDto.getAnnotation() != null) {
+        if(eventDto.getAnnotation() != null) {
             event.setAnnotation(eventDto.getAnnotation());
         }
-        if (eventDto.getCategory() != null) {
+        if(eventDto.getCategory() != null) {
             List<Category> categories = new ArrayList<>();
             categories.add(CategoryDtoMapper.fromDto(eventDto.getCategory()));
             event.setCategories(categories);
         }
-        if (eventDto.getDescription() != null) {
+        if(eventDto.getDescription() != null) {
             event.setDescription(eventDto.getDescription());
         }
-        if (eventDto.getEventDate() != null) {
+        if(eventDto.getEventDate() != null) {
             event.setEventDate(eventDto.getEventDate());
         }
-        if (eventDto.getInitiator() != null) {
+        if(eventDto.getInitiator() != null) {
             event.setInitiator(UserDtoMapper.fromDto(eventDto.getInitiator()));
         }
-        if (eventDto.getLocation() != null) {
+        if(eventDto.getLocation() != null) {
             List<Location> locations = new ArrayList<>();
             locations.add(eventDto.getLocation());
             event.setLocations(locations);
         }
-        if (eventDto.getPaid() != null) {
+        if(eventDto.getPaid() != null) {
             event.setPaid(eventDto.getPaid());
         }
-        if (eventDto.getParticipantLimit() != null) {
+        if(eventDto.getParticipantLimit() != null) {
             event.setParticipantLimit(eventDto.getParticipantLimit());
         }
-        if (eventDto.getState() != null) {
+        if(eventDto.getState() != null) {
             event.setState(eventDto.getState());
         }
-        if (eventDto.getTitle() != null) {
+        if(eventDto.getTitle() != null) {
             event.setTitle(eventDto.getTitle());
         }
 

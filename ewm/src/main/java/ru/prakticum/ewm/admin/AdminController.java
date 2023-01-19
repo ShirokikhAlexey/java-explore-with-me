@@ -8,6 +8,7 @@ import ru.prakticum.ewm.category.dto.CategoryDto;
 import ru.prakticum.ewm.compilation.dto.CompilationDto;
 import ru.prakticum.ewm.compilation.dto.CompilationShortDto;
 import ru.prakticum.ewm.event.dto.EventDto;
+import ru.prakticum.ewm.event.dto.RequestDto;
 import ru.prakticum.ewm.user.dto.UserDto;
 
 import java.time.LocalDateTime;
@@ -25,9 +26,9 @@ public class AdminController {
                               @RequestParam(required = false) List<String> states,
                               @RequestParam(required = false) List<Integer> categories,
                               @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                              @RequestParam(required = false) LocalDateTime rangeStart,
+                                  @RequestParam(required = false) LocalDateTime rangeStart,
                               @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                              @RequestParam(required = false) LocalDateTime rangeEnd,
+                                  @RequestParam(required = false) LocalDateTime rangeEnd,
                               @RequestParam(defaultValue = "1", required = false) Integer from,
                               @RequestParam(defaultValue = "10", required = false) Integer size) {
         return adminService.search(users, states, categories, rangeStart, rangeEnd, from, size);

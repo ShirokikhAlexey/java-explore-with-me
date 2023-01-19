@@ -6,6 +6,7 @@ import ru.prakticum.ewm.event.model.Event;
 import ru.prakticum.ewm.event.model.Request;
 import ru.prakticum.ewm.event.model.RequestStatus;
 import ru.prakticum.ewm.event.model.Status;
+import ru.prakticum.ewm.user.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -52,38 +53,38 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
         }
 
         Predicate predicate = cb.and();
-        if (text != null) {
+        if (text != null){
             Predicate predicateText = cb.or(cb.like(eventRoot.get("annotation"), "%" + text + "%"),
                     cb.like(eventRoot.get("description"), "%" + text + "%"));
             predicate = cb.and(predicate, predicateText);
         }
-        if (categories != null) {
+        if(categories != null) {
             Predicate predicateCategories = categoryJoin.get("id").in(categories);
             predicate = cb.and(predicate, predicateCategories);
         }
-        if (paid != null) {
+        if(paid != null) {
             Predicate predicatePaid = cb.equal(eventRoot.get("paid"), paid);
             predicate = cb.and(predicate, predicatePaid);
         }
-        if (rangeStart != null) {
+        if(rangeStart != null) {
             Predicate predicateRangeStart = cb.greaterThanOrEqualTo(eventRoot.get("eventDate"), rangeStart);
             predicate = cb.and(predicate, predicateRangeStart);
         }
-        if (rangeEnd != null) {
+        if(rangeEnd != null) {
             Predicate predicateRangeEnd = cb.lessThanOrEqualTo(eventRoot.get("eventDate"), rangeEnd);
             predicate = cb.and(predicate, predicateRangeEnd);
         }
-        if (onlyAvailable != null && onlyAvailable) {
+        if(onlyAvailable != null && onlyAvailable) {
             Predicate predicateOnlyAvailable = cb.gt(eventRoot.get("participantLimit"), approved);
             predicate = cb.and(predicate, predicateOnlyAvailable);
         }
-        if (users != null) {
+        if(users != null) {
             Predicate predicateUsers = eventRoot.get("initiator").get("id").in(users);
             predicate = cb.and(predicate, predicateUsers);
         }
-        if (states != null) {
+        if(states != null) {
             List<Status> statuses = new ArrayList<>();
-            for (String i : states) {
+            for (String i:states) {
                 statuses.add(Status.valueOf(i));
             }
             Predicate predicateStates = eventRoot.get("state").in(statuses);

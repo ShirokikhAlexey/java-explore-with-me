@@ -29,8 +29,7 @@ public class Event {
     @Column(name = "timestamp", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime timestamp;
 
-    public Event() {
-    }
+    public Event() {}
 
     public Event(Integer id, String app, String uri, String ip, LocalDateTime timestamp) {
         this.id = id;

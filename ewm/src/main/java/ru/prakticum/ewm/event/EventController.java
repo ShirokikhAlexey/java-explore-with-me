@@ -23,9 +23,9 @@ public class EventController {
                                         @RequestParam(required = false) List<Integer> categories,
                                         @RequestParam(required = false) Boolean paid,
                                         @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                        @RequestParam(required = false) LocalDateTime rangeStart,
+                                            @RequestParam(required = false) LocalDateTime rangeStart,
                                         @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                        @RequestParam(required = false) LocalDateTime rangeEnd,
+                                            @RequestParam(required = false) LocalDateTime rangeEnd,
                                         @RequestParam(required = false) Boolean onlyAvailable,
                                         @RequestParam(required = false) String sort,
                                         @RequestParam(defaultValue = "1", required = false) Integer from,

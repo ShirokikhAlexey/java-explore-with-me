@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<EventDto> getUserEvents(Integer userId, Integer from, Integer size) {
         List<EventDto> result = new ArrayList<>();
-        List<Event> events = eventRepository.getUserEvents(userId, PageRequest.of(from / size, size));
+        List<Event> events = eventRepository.getUserEvents(userId,  PageRequest.of(from / size, size));
         for (Event e : events) {
             Long confirmed = eventRepository.getApprovedCount(e.getId());
             result.add(EventMapper.toDto(e, Math.toIntExact(confirmed)));
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("Not found");
         }
         List<RequestDto> response = new ArrayList<>();
-        for (Request r : eventOptional.get().getRequests()) {
+        for(Request r : eventOptional.get().getRequests()) {
             response.add(EventMapper.requestToDto(r));
         }
         return response;
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
         request.setStatus(RequestStatus.CONFIRMED);
 
         if (Objects.equals(Math.toIntExact(currentApproved) + 1, eventOptional.get().getParticipantLimit())) {
-            for (Request r : requestRepository.getEventRequestsPending(eventId)) {
+            for (Request r: requestRepository.getEventRequestsPending(eventId)) {
                 r.setStatus(RequestStatus.REJECTED);
                 requestRepository.save(r);
             }
@@ -181,7 +181,7 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("Not found");
         }
         List<RequestDto> response = new ArrayList<>();
-        for (Request r : requestRepository.getUserRequests(userId)) {
+        for(Request r : requestRepository.getUserRequests(userId)) {
             response.add(EventMapper.requestToDto(r));
         }
         return response;

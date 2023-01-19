@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CompilationServiceImpl implements CompilationService {
+public class CompilationServiceImpl implements CompilationService{
     private final CompilationRepository repository;
 
     public CompilationServiceImpl(CompilationRepository repository) {
@@ -31,7 +31,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto get(Integer compilationId) {
         Optional<Compilation> compilation = repository.findById(compilationId);
-        if (compilation.isEmpty()) {
+        if(compilation.isEmpty()) {
             throw new NotFoundException("Not found");
         }
         return CompilationDtoMapper.toDto(compilation.get());
