@@ -39,18 +39,21 @@ public class EventServiceImpl implements EventService {
             events = repository.getStatisticsWithUris(start, end, uris, false);
         }
         for (Event event : events) {
-            if (counter.containsKey(event.getApp())) {
-                if (!counter.containsKey(event.getUri())) {
-                    counter.get(event.getApp()).put(event.getUri(), 0);
+            EventDto dto = EventMapper.toDto(event, null);
+
+            if (counter.containsKey(dto.getApp())) {
+                if (!counter.get(dto.getApp()).containsKey(dto.getUri())) {
+                    counter.get(dto.getApp()).put(dto.getUri(), 0);
                 }
             } else {
-                counter.put(event.getApp(), new HashMap<>());
-                counter.get(event.getApp()).put(event.getUri(), 0);
+                counter.put(dto.getApp(), new HashMap<>());
+                counter.get(dto.getApp()).put(dto.getUri(), 0);
             }
-            counter.get(event.getApp()).put(event.getUri(), counter.get(event.getApp()).get(event.getUri()) + 1);
+            counter.get(dto.getApp()).put(dto.getUri(), counter.get(dto.getApp()).get(dto.getUri()) + 1);
+            eventDtos.add(dto);
         }
-        for (Event event : events) {
-            eventDtos.add(EventMapper.toDto(event, counter.get(event.getApp()).get(event.getUri())));
+        for (EventDto event : eventDtos) {
+            event.setHits(counter.get(event.getApp()).get(event.getUri()));
         }
         return eventDtos;
     }

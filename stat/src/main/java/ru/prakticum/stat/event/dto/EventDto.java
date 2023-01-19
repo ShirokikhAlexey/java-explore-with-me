@@ -7,8 +7,6 @@ import ru.prakticum.stat.exception.InvalidEventException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 @Data
