@@ -222,7 +222,7 @@ public class AdminServiceImpl implements AdminService {
             throw new NotFoundException("Not found");
         }
         Compilation compilation = compilationOptional.get();
-        compilation.setShowOnMain(true);
+        compilation.setShow_on_main(true);
         compilationRepository.save(compilation);
     }
 
@@ -233,7 +233,7 @@ public class AdminServiceImpl implements AdminService {
             throw new NotFoundException("Not found");
         }
         Compilation compilation = compilationOptional.get();
-        compilation.setShowOnMain(false);
+        compilation.setShow_on_main(false);
         compilationRepository.save(compilation);
     }
 }
