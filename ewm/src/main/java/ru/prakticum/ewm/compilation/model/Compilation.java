@@ -46,9 +46,10 @@ public class Compilation {
     )
     private List<Event> events;
 
-    public Compilation() {}
+    public Compilation() {
+    }
 
-    public Compilation(Integer id, String title, Boolean pinned,List<Event> events) {
+    public Compilation(Integer id, String title, Boolean pinned, List<Event> events) {
         this.id = id;
         this.name = title;
         this.show_on_main = pinned;

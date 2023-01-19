@@ -12,7 +12,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Service
-public class CompilationRepositoryCustomImpl implements CompilationRepositoryCustom{
+public class CompilationRepositoryCustomImpl implements CompilationRepositoryCustom {
     @PersistenceContext
     private EntityManager em;
 
@@ -25,7 +25,7 @@ public class CompilationRepositoryCustomImpl implements CompilationRepositoryCus
 
         Predicate predicatePinned = cb.equal(root.get("show_on_main"), pinned);
         Predicate predicate = cb.and();
-        if (pinned != null){
+        if (pinned != null) {
             predicate = cb.and(predicate, predicatePinned);
         }
         criteriaQuery.where(predicate);

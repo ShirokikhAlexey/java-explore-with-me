@@ -1,10 +1,10 @@
 package ru.prakticum.stat.event;
 
+import org.springframework.stereotype.Service;
 import ru.prakticum.stat.event.dto.EventDto;
 import ru.prakticum.stat.event.dto.EventMapper;
 import ru.prakticum.stat.event.model.Event;
 import ru.prakticum.stat.exception.InvalidEventException;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class EventServiceImpl implements EventService{
+public class EventServiceImpl implements EventService {
     private final EventRepository repository;
 
     public EventServiceImpl(EventRepository repository) {
@@ -39,7 +39,7 @@ public class EventServiceImpl implements EventService{
         } else {
             events = repository.getStatisticsWithUris(start, end, uris);
         }
-        for(Event event : events){
+        for (Event event : events) {
             if (counter.containsKey(event.getApp())) {
                 if (!counter.containsKey(event.getUri())) {
                     counter.get(event.getApp()).put(event.getUri(), 0);
@@ -50,7 +50,7 @@ public class EventServiceImpl implements EventService{
             }
             counter.get(event.getApp()).put(event.getUri(), counter.get(event.getApp()).get(event.getUri()) + 1);
         }
-        for(Event event : events) {
+        for (Event event : events) {
             eventDtos.add(EventMapper.toDto(event, counter.get(event.getApp()).get(event.getUri())));
         }
         return eventDtos;
