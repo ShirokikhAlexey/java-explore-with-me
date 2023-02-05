@@ -8,6 +8,7 @@ import ru.prakticum.ewm.event.dto.EventDto;
 import ru.prakticum.ewm.event.dto.EventShortDto;
 import ru.prakticum.ewm.util.StatClient;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,7 +34,8 @@ public class EventController {
                                         @RequestParam(required = false) Boolean onlyAvailable,
                                         @RequestParam(required = false) String sort,
                                         @RequestParam(defaultValue = "1", required = false) Integer from,
-                                        @RequestParam(defaultValue = "10", required = false) Integer size) {
+                                        @RequestParam(defaultValue = "10", required = false) Integer size,
+                                        HttpServletRequest request) {
         if (from < 0 || size < 0) {
             throw new ValidationException();
         }
@@ -42,8 +44,8 @@ public class EventController {
     }
 
     @GetMapping(value = "/{eventId}")
-    public EventDto get(@PathVariable int eventId) {
-        statClient.saveRequest("test", "1.1.1.1", LocalDateTime.now());
+    public EventDto get(@PathVariable int eventId, HttpServletRequest request) {
+        statClient.saveRequest("/events/" + eventId, request.getRemoteAddr(), LocalDateTime.now());
         return eventService.getShort(eventId);
     }
 }

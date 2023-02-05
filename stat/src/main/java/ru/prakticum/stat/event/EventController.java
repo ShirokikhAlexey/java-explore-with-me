@@ -35,6 +35,7 @@ public class EventController {
 
     @PostMapping("/hit")
     public EventDto create(@RequestBody EventDto eventDto) {
+        System.out.println("\n\n\n\n\n" + eventDto.toString() + "\n\n\n\n");
         return eventService.create(eventDto);
     }
 }
