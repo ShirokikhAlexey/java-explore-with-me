@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.prakticum.ewm.event.dto.EventDto;
 import ru.prakticum.ewm.event.dto.EventShortDto;
+import ru.prakticum.ewm.util.StatClient;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -17,6 +18,9 @@ import java.util.List;
 public class EventController {
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private StatClient statClient;
 
     @GetMapping
     public List<EventShortDto> getState(@RequestParam(required = false) String text,
@@ -39,6 +43,7 @@ public class EventController {
 
     @GetMapping(value = "/{eventId}")
     public EventDto get(@PathVariable int eventId) {
+        statClient.saveRequest("test", "1.1.1.1", LocalDateTime.now());
         return eventService.getShort(eventId);
     }
 }
