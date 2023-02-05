@@ -33,7 +33,7 @@ public class EventController {
         return eventService.getStatistics(start, end, test, unique);
     }
 
-    @PostMapping("hit")
+    @PostMapping("/hit")
     public EventDto create(@RequestBody EventDto eventDto) {
         return eventService.create(eventDto);
     }
