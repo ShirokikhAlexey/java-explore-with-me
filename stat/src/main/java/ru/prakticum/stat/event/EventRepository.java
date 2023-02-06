@@ -14,9 +14,10 @@ public interface EventRepository extends JpaRepository<Event, Integer>, EventRep
             "and e.timestamp <= ?2 ")
     List<Event> getStatistics(LocalDateTime start, LocalDateTime end);
 
-    @Query(value = "select distinct e " +
+    @Query(value = "select e " +
             "from Event as e " +
             "where e.timestamp >= ?1 " +
-            "and e.timestamp <= ?2 ")
+            "and e.timestamp <= ?2 " +
+            "group by (e.app, e.uri, e.ip)")
     List<Event> getStatisticsUnique(LocalDateTime start, LocalDateTime end);
 }

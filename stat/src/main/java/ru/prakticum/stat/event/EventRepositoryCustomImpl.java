@@ -35,7 +35,10 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
             predicate = cb.and(predicate, predicateUris);
         }
 
-        criteriaQuery.where(predicate).distinct(distinct);
+        criteriaQuery.where(predicate);
+        if (distinct) {
+            criteriaQuery.multiselect(root.get("ip")).distinct(true);
+        }
         return em.createQuery(criteriaQuery).getResultList();
     }
 }

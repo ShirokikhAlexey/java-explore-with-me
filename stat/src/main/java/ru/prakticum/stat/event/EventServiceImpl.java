@@ -8,10 +8,7 @@ import ru.prakticum.stat.event.model.Event;
 import ru.prakticum.stat.exception.InvalidEventException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -29,7 +26,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDtoShort> getStatistics(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
         List<Event> events;
-        List<EventDtoShort> eventDtos = new ArrayList<>();
+        HashSet<EventDtoShort> eventDtos = new HashSet<>();
         HashMap<String, Integer> counter = new HashMap<>();
         if (uris.isEmpty() && unique) {
             events = repository.getStatisticsUnique(start, end);
@@ -52,8 +49,9 @@ public class EventServiceImpl implements EventService {
         for (EventDtoShort event : eventDtos) {
             event.setHits(counter.get(event.getApp() + event.getUri()));
         }
-        Collections.sort(eventDtos);
-        Collections.reverse(eventDtos);
-        return eventDtos;
+        List<EventDtoShort> eventDtosList = new ArrayList<>(eventDtos);
+        Collections.sort(eventDtosList);
+        Collections.reverse(eventDtosList);
+        return eventDtosList;
     }
 }
