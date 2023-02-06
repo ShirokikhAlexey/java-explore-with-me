@@ -20,11 +20,11 @@ public class EventController {
 
     @GetMapping("/stats")
     public List<EventDtoShort> search(@RequestParam
-                                 @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                         LocalDateTime start,
+                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                              LocalDateTime start,
                                       @RequestParam
-                                 @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                         LocalDateTime end,
+                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                              LocalDateTime end,
                                       @RequestParam(defaultValue = "", required = false) List<String> uris,
                                       @RequestParam(defaultValue = "false", required = false) boolean unique) {
         List<String> test = new ArrayList<>();
