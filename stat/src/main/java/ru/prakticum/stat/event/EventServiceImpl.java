@@ -9,6 +9,7 @@ import ru.prakticum.stat.exception.InvalidEventException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,6 +52,8 @@ public class EventServiceImpl implements EventService {
         for (EventDtoShort event : eventDtos) {
             event.setHits(counter.get(event.getApp() + event.getUri()));
         }
+        Collections.sort(eventDtos);
+        Collections.reverse(eventDtos);
         return eventDtos;
     }
 }
