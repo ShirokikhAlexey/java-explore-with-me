@@ -28,9 +28,9 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
         predicate = cb.and(predicate, cb.between(root.get("timestamp"), start, end));
 
         if (uris != null && !uris.isEmpty()) {
-            Predicate predicateUris = cb.and();
+            Predicate predicateUris = cb.or();
             for (String uri : uris) {
-                predicateUris = cb.or(predicateUris, cb.equal(root.get("uri"), uri));
+                predicateUris = cb.or(predicateUris, cb.like(root.get("uri"), uri));
             }
             predicate = cb.and(predicate, predicateUris);
         }
