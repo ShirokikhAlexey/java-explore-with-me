@@ -2,6 +2,7 @@ package ru.prakticum.stat.event;
 
 import org.springframework.stereotype.Service;
 import ru.prakticum.stat.event.dto.EventDto;
+import ru.prakticum.stat.event.dto.EventDtoShort;
 import ru.prakticum.stat.event.dto.EventMapper;
 import ru.prakticum.stat.event.model.Event;
 import ru.prakticum.stat.exception.InvalidEventException;
@@ -25,10 +26,10 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDto> getStatistics(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+    public List<EventDtoShort> getStatistics(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
         List<Event> events;
-        List<EventDto> eventDtos = new ArrayList<>();
-        HashMap<String, HashMap<String, Integer>> counter = new HashMap<>();
+        List<EventDtoShort> eventDtos = new ArrayList<>();
+        HashMap<String, Integer> counter = new HashMap<>();
         if (uris.isEmpty() && unique) {
             events = repository.getStatisticsUnique(start, end);
         } else if (uris.isEmpty()) {
@@ -39,21 +40,16 @@ public class EventServiceImpl implements EventService {
             events = repository.getStatisticsWithUris(start, end, uris, false);
         }
         for (Event event : events) {
-            EventDto dto = EventMapper.toDto(event, null);
+            EventDtoShort dto = EventMapper.toDtoShort(event, null);
 
-            if (counter.containsKey(dto.getApp())) {
-                if (!counter.get(dto.getApp()).containsKey(dto.getUri())) {
-                    counter.get(dto.getApp()).put(dto.getUri(), 0);
-                }
-            } else {
-                counter.put(dto.getApp(), new HashMap<>());
-                counter.get(dto.getApp()).put(dto.getUri(), 0);
+            if (!counter.containsKey(dto.getApp() + dto.getUri())) {
+                counter.put(dto.getApp() + dto.getUri(), 0);
             }
-            counter.get(dto.getApp()).put(dto.getUri(), counter.get(dto.getApp()).get(dto.getUri()) + 1);
+            counter.put(dto.getApp() + dto.getUri(), counter.get(dto.getApp() + dto.getUri()) + 1);
             eventDtos.add(dto);
         }
-        for (EventDto event : eventDtos) {
-            event.setHits(counter.get(event.getApp()).get(event.getUri()));
+        for (EventDtoShort event : eventDtos) {
+            event.setHits(counter.get(event.getApp() + event.getUri()));
         }
         return eventDtos;
     }

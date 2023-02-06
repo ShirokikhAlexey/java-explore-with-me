@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.prakticum.stat.event.dto.EventDto;
+import ru.prakticum.stat.event.dto.EventDtoShort;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,14 +19,14 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping("/stats")
-    public List<EventDto> search(@RequestParam
+    public List<EventDtoShort> search(@RequestParam
                                  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
                                          LocalDateTime start,
-                                 @RequestParam
+                                      @RequestParam
                                  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
                                          LocalDateTime end,
-                                 @RequestParam(defaultValue = "", required = false) List<String> uris,
-                                 @RequestParam(defaultValue = "false", required = false) boolean unique) {
+                                      @RequestParam(defaultValue = "", required = false) List<String> uris,
+                                      @RequestParam(defaultValue = "false", required = false) boolean unique) {
         List<String> test = new ArrayList<>();
         for (String uri : uris) {
             test.add(uri.strip());
@@ -35,7 +36,6 @@ public class EventController {
 
     @PostMapping("/hit")
     public EventDto create(@RequestBody EventDto eventDto) {
-        System.out.println("\n\n\n\n\n" + eventDto.toString() + "\n\n\n\n");
         return eventService.create(eventDto);
     }
 }

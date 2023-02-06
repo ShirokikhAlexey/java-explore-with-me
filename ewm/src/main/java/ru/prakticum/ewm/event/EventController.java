@@ -39,6 +39,7 @@ public class EventController {
         if (from < 0 || size < 0) {
             throw new ValidationException();
         }
+        statClient.saveRequest("/events", request.getRemoteAddr(), LocalDateTime.now());
         return eventService.searchEventsShort(text, categories, paid, rangeStart, rangeEnd, onlyAvailable,
                 sort, from, size);
     }

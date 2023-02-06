@@ -10,4 +10,8 @@ public class EventMapper {
     public static Event fromDto(EventDto eventDto) {
         return new Event(eventDto.getId(), eventDto.getApp(), eventDto.getUri(), eventDto.getIp(), eventDto.getTimestamp());
     }
+
+    public static EventDtoShort toDtoShort(Event event, Integer hits) {
+        return new EventDtoShort(event.getApp(), event.getUri(), hits);
+    }
 }
