@@ -4,7 +4,7 @@ import ru.prakticum.stat.event.model.Event;
 
 public final class EventMapper {
     public static EventDto toDto(Event event, Integer hits) {
-        return new EventDto(event.getId(), event.getApp(), event.getUri(), event.getIp(), event.getTimestamp(), hits);
+        return new EventDto(event.getId(), event.getApp(), event.getUri(), event.getIp(), hits, event.getTimestamp());
     }
 
     public static Event fromDto(EventDto eventDto) {

@@ -1,12 +1,16 @@
 package ru.prakticum.stat.event.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -29,14 +33,4 @@ public class Event {
     @Column(name = "timestamp", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime timestamp;
 
-    public Event() {
-    }
-
-    public Event(Integer id, String app, String uri, String ip, LocalDateTime timestamp) {
-        this.id = id;
-        this.app = app;
-        this.uri = uri;
-        this.ip = ip;
-        this.timestamp = timestamp;
-    }
 }
