@@ -8,7 +8,7 @@ import ru.prakticum.ewm.event.model.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompilationDtoMapper {
+public final class CompilationDtoMapper {
     public static CompilationDto toDto(Compilation compilation) {
         List<EventShortDto> events = new ArrayList<>();
         for (Event e : compilation.getEvents()) {

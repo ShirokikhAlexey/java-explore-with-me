@@ -2,7 +2,7 @@ package ru.prakticum.ewm.user.dto;
 
 import ru.prakticum.ewm.user.model.User;
 
-public class UserDtoMapper {
+public final class UserDtoMapper {
     public static User fromDto(UserShortDto userShortDto) {
         return new User(userShortDto.getId(), userShortDto.getName());
     }

@@ -1,13 +1,11 @@
 package ru.prakticum.ewm.event.dto;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import ru.prakticum.ewm.event.model.RequestStatus;
 
 import java.time.LocalDateTime;
 
 @Data
-@RequiredArgsConstructor
 public class RequestDto {
     private Integer id;
     private Integer event;

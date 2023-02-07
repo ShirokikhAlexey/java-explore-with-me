@@ -12,8 +12,12 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/categories")
 public class CategoryController {
+    private final CategoryService categoryService;
+
     @Autowired
-    private CategoryService categoryService;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping
     public List<CategoryDto> get(@RequestParam(defaultValue = "1", required = false) Integer from,

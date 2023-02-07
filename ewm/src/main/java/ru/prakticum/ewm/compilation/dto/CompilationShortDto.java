@@ -2,12 +2,10 @@ package ru.prakticum.ewm.compilation.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Data
-@RequiredArgsConstructor
 public class CompilationShortDto {
     private Integer id;
     private String title;

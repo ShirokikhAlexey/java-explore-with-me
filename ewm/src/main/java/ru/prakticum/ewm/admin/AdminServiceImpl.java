@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.admin;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.prakticum.ewm.category.CategoryRepository;
@@ -30,19 +31,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
     private final CompilationRepository compilationRepository;
-
-    public AdminServiceImpl(UserRepository userRepository, EventRepository eventRepository,
-                            CompilationRepository compilationRepository, CategoryRepository categoryRepository) {
-        this.userRepository = userRepository;
-        this.eventRepository = eventRepository;
-        this.compilationRepository = compilationRepository;
-        this.categoryRepository = categoryRepository;
-    }
 
     @Override
     public List<EventDto> search(List<Integer> users, List<String> states, List<Integer> categories,

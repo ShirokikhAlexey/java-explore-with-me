@@ -15,8 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping()
 public class EventController {
+    private final EventService eventService;
+
     @Autowired
-    private EventService eventService;
+    public EventController(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     @GetMapping("/stats")
     public List<EventDtoShort> search(@RequestParam

@@ -12,8 +12,13 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/compilations")
 public class CompilationController {
+    private final CompilationService compilationService;
+
     @Autowired
-    private CompilationService compilationService;
+    public CompilationController(CompilationService compilationService) {
+        this.compilationService = compilationService;
+    }
+
 
     @GetMapping
     public List<CompilationDto> getState(@RequestParam(required = false) Boolean pinned,

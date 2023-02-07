@@ -17,8 +17,12 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/admin")
 public class AdminController {
+    private final AdminService adminService;
+
     @Autowired
-    private AdminService adminService;
+    public AdminController(AdminService adminService) {
+        this.adminService = adminService;
+    }
 
     @GetMapping(value = "/events")
     public List<EventDto> get(@RequestParam(required = false) List<Integer> users,

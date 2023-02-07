@@ -2,7 +2,7 @@ package ru.prakticum.ewm.category.dto;
 
 import ru.prakticum.ewm.category.model.Category;
 
-public class CategoryDtoMapper {
+public final class CategoryDtoMapper {
     public static CategoryDto toDto(Category category) {
         return new CategoryDto(category.getId(), category.getName());
     }

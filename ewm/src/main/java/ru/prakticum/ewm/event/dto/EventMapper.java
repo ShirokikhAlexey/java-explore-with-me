@@ -10,7 +10,7 @@ import ru.prakticum.ewm.user.dto.UserDtoMapper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventMapper {
+public final class EventMapper {
     public static EventDto toDto(Event event, Integer confirmedRequests) {
         EventDto eventDto = new EventDto(event.getId(), event.getAnnotation(),
                 confirmedRequests, event.getCreatedOn(), event.getDescription(), event.getEventDate(),

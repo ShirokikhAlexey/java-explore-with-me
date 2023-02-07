@@ -1,10 +1,8 @@
 package ru.prakticum.stat.event.dto;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
 public class EventDtoShort implements Comparable<EventDtoShort> {
     private String app;
     private String uri;

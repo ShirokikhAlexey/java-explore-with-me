@@ -1,12 +1,10 @@
 package ru.prakticum.ewm.util;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
-@RequiredArgsConstructor
 public class StatDto {
     private String uri;
     private String ip;

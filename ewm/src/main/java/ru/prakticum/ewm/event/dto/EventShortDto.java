@@ -2,14 +2,12 @@ package ru.prakticum.ewm.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import ru.prakticum.ewm.category.dto.CategoryDto;
 import ru.prakticum.ewm.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
 
 @Data
-@RequiredArgsConstructor
 public class EventShortDto {
     private Integer id;
     private String annotation;

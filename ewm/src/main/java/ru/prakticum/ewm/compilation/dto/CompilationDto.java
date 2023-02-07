@@ -2,13 +2,11 @@ package ru.prakticum.ewm.compilation.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import ru.prakticum.ewm.event.dto.EventShortDto;
 
 import java.util.List;
 
 @Data
-@RequiredArgsConstructor
 public class CompilationDto {
     private Integer id;
     private String title;

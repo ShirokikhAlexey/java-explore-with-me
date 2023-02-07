@@ -17,11 +17,14 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/events")
 public class EventController {
-    @Autowired
-    private EventService eventService;
+    private final EventService eventService;
+    private final StatClient statClient;
 
     @Autowired
-    private StatClient statClient;
+    public EventController(EventService eventService, StatClient statClient) {
+        this.eventService = eventService;
+        this.statClient = statClient;
+    }
 
     @GetMapping
     public List<EventShortDto> getState(@RequestParam(required = false) String text,
