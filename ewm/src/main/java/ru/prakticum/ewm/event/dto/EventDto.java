@@ -1,7 +1,9 @@
 package ru.prakticum.ewm.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.prakticum.ewm.category.dto.CategoryDto;
 import ru.prakticum.ewm.event.model.Location;
 import ru.prakticum.ewm.event.model.Status;
@@ -10,6 +12,7 @@ import ru.prakticum.ewm.user.dto.UserShortDto;
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
 public class EventDto {
     private Integer id;
     private Integer eventId;

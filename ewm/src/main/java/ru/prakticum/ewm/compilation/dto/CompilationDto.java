@@ -1,12 +1,16 @@
 package ru.prakticum.ewm.compilation.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.prakticum.ewm.event.dto.EventShortDto;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CompilationDto {
     private Integer id;
     private String title;
@@ -19,12 +23,5 @@ public class CompilationDto {
         this.id = id;
         this.title = title;
         this.pinned = pinned;
-    }
-
-    public CompilationDto(Integer id, String title, Boolean pinned, List<EventShortDto> events) {
-        this.id = id;
-        this.title = title;
-        this.pinned = pinned;
-        this.events = events;
     }
 }
