@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.user;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.prakticum.ewm.event.EventRepository;
@@ -23,17 +24,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
-
-    public UserServiceImpl(UserRepository userRepository, EventRepository eventRepository,
-                           RequestRepository requestRepository) {
-        this.userRepository = userRepository;
-        this.eventRepository = eventRepository;
-        this.requestRepository = requestRepository;
-    }
 
     @Override
     public List<EventDto> getUserEvents(Integer userId, Integer from, Integer size) {

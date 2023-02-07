@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.compilation;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.prakticum.ewm.compilation.dto.CompilationDto;
 import ru.prakticum.ewm.compilation.dto.CompilationDtoMapper;
@@ -11,12 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CompilationServiceImpl implements CompilationService {
     private final CompilationRepository repository;
-
-    public CompilationServiceImpl(CompilationRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public List<CompilationDto> searchCompilations(Boolean pinned, Integer from, Integer size) {

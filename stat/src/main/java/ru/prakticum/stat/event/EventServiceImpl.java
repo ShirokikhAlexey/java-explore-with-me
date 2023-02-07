@@ -1,5 +1,6 @@
 package ru.prakticum.stat.event;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.prakticum.stat.event.dto.EventDto;
 import ru.prakticum.stat.event.dto.EventDtoShort;
@@ -11,12 +12,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
     private final EventRepository repository;
-
-    public EventServiceImpl(EventRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public EventDto create(EventDto eventDto) throws InvalidEventException {

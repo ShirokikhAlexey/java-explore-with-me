@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.event;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.prakticum.ewm.event.dto.EventDto;
 import ru.prakticum.ewm.event.dto.EventMapper;
@@ -15,12 +16,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
     private final EventRepository repository;
-
-    public EventServiceImpl(EventRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public EventDto create(EventShortDto eventDto) throws InvalidEventException {

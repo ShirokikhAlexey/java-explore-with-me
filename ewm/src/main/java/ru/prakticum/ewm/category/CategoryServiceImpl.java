@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.category;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.prakticum.ewm.category.dto.CategoryDto;
 import ru.prakticum.ewm.category.dto.CategoryDtoMapper;
@@ -11,12 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
-
-    public CategoryServiceImpl(CategoryRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public List<CategoryDto> get(Integer from, Integer size) {
