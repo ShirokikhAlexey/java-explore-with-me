@@ -6,9 +6,11 @@ import ru.prakticum.ewm.event.model.Event;
 import ru.prakticum.ewm.event.model.Location;
 import ru.prakticum.ewm.event.model.Request;
 import ru.prakticum.ewm.event.model.Status;
+import ru.prakticum.ewm.exception.ConflictException;
 import ru.prakticum.ewm.user.dto.UserDtoMapper;
 
 import javax.validation.ValidationException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -83,6 +85,9 @@ public final class EventMapper {
                 event.setDescription(eventDto.getDescription());
             }
             if (eventDto.getEventDate() != null) {
+                if (eventDto.getEventDate().isBefore(LocalDateTime.now())) {
+                    throw new ConflictException("Invalid date");
+                }
                 event.setEventDate(eventDto.getEventDate());
             }
             if (eventDto.getInitiator() != null) {
@@ -107,9 +112,15 @@ public final class EventMapper {
             }
             if (eventDto.getStateAction() != null) {
                 if (Objects.equals(eventDto.getStateAction(), "PUBLISH_EVENT")) {
+                    if (event.getState().equals(Status.PUBLISHED) || event.getState().equals(Status.CANCELED)) {
+                        throw new ConflictException("Invalid state");
+                    }
                     event.setState(Status.PUBLISHED);
                 }
                 if (Objects.equals(eventDto.getStateAction(), "REJECT_EVENT ")) {
+                    if (event.getState().equals(Status.PUBLISHED)) {
+                        throw new ConflictException("Invalid state");
+                    }
                     event.setState(Status.CANCELED);
                 }
             }

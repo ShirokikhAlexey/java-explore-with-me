@@ -12,6 +12,7 @@ import ru.prakticum.ewm.event.model.Event;
 import ru.prakticum.ewm.event.model.Request;
 import ru.prakticum.ewm.event.model.RequestStatus;
 import ru.prakticum.ewm.event.model.Status;
+import ru.prakticum.ewm.exception.ConflictException;
 import ru.prakticum.ewm.exception.InvalidEventException;
 import ru.prakticum.ewm.exception.NotFoundException;
 import ru.prakticum.ewm.user.dto.UserDtoMapper;
@@ -191,11 +192,11 @@ public class UserServiceImpl implements UserService {
         User user = userOptional.get();
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
-            throw new InvalidEventException("Event not found");
+            throw new ConflictException("Event not found");
         }
         Event event = eventOptional.get();
         if (Objects.equals(event.getInitiator().getId(), userId)) {
-            throw new InvalidEventException("Request from initiator");
+            throw new ConflictException("Request from initiator");
         }
         if (!event.getRequestModeration()) {
             return EventMapper.requestToDto(requestRepository.save(new Request(user, event, RequestStatus.CONFIRMED)));

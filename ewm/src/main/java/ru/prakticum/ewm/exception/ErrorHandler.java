@@ -26,7 +26,7 @@ public class ErrorHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundException(final NotFoundException e) {
         log.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.BAD_REQUEST.name(),
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.NOT_FOUND.name(),
                 LocalDateTime.now()));
     }
 
@@ -47,7 +47,14 @@ public class ErrorHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleBadRequestAttributes(final ConstraintViolationException e) {
         log.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.BAD_REQUEST.name(),
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.CONFLICT.name(),
+                LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConflictException(final ConflictException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage(), "Error", HttpStatus.CONFLICT.name(),
                 LocalDateTime.now()));
     }
 

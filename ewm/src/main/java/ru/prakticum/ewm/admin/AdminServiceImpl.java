@@ -17,6 +17,7 @@ import ru.prakticum.ewm.event.dto.EventDto;
 import ru.prakticum.ewm.event.dto.EventMapper;
 import ru.prakticum.ewm.event.model.Event;
 import ru.prakticum.ewm.event.model.Status;
+import ru.prakticum.ewm.exception.ConflictException;
 import ru.prakticum.ewm.exception.InvalidEventException;
 import ru.prakticum.ewm.exception.NotFoundException;
 import ru.prakticum.ewm.user.UserRepository;
@@ -24,6 +25,7 @@ import ru.prakticum.ewm.user.dto.UserDto;
 import ru.prakticum.ewm.user.dto.UserDtoMapper;
 import ru.prakticum.ewm.user.model.User;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +119,7 @@ public class AdminServiceImpl implements AdminService {
         }
         Category category = categoryOptional.get();
         if (!category.getEvents().isEmpty()) {
-            throw new InvalidEventException("Invalid event");
+            throw new ConflictException("Invalid event");
         }
         categoryRepository.delete(category);
     }
