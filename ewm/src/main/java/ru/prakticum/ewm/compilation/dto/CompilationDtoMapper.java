@@ -26,4 +26,15 @@ public final class CompilationDtoMapper {
             throw new ValidationException();
         }
     }
+
+    public static Compilation update(Compilation compilation, CompilationShortDto shortDto, List<Event> events) {
+        compilation.setEvents(events);
+        if (shortDto.getPinned() != null) {
+            compilation.setShowOnMain(shortDto.getPinned());
+        }
+        if (shortDto.getTitle() != null) {
+            compilation.setName(shortDto.getTitle());
+        }
+        return compilation;
+    }
 }

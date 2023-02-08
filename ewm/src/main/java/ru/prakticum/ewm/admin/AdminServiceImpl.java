@@ -25,7 +25,6 @@ import ru.prakticum.ewm.user.dto.UserDto;
 import ru.prakticum.ewm.user.dto.UserDtoMapper;
 import ru.prakticum.ewm.user.model.User;
 
-import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -177,10 +176,13 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public CompilationDto updateCompilation(Integer compilationId, CompilationShortDto compilationShortDto) {
         List<Event> events = eventRepository.findAllById(compilationShortDto.getEvents());
-        Compilation compilation = CompilationDtoMapper.fromDto(new CompilationDto(compilationShortDto.getId(),
-                compilationShortDto.getTitle(), compilationShortDto.getPinned()), events);
-        compilation.setId(compilationId);
-        return CompilationDtoMapper.toDto(compilationRepository.save(compilation));
+        Optional<Compilation> compilationOptional = compilationRepository.findById(compilationId);
+        if (compilationOptional.isEmpty()) {
+            throw new NotFoundException("Not Found");
+        }
+        Compilation compilation = compilationOptional.get();
+
+        return CompilationDtoMapper.toDto(compilationRepository.save(CompilationDtoMapper.update(compilation, compilationShortDto, events)));
     }
 
     @Override

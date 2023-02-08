@@ -52,7 +52,11 @@ public class UserServiceImpl implements UserService {
         if (!Objects.equals(event.getInitiator().getId(), userId) ||
                 event.getState() != Status.PENDING && event.getState() != Status.CANCELED ||
                 event.getEventDate().minusHours(2).isBefore(LocalDateTime.now())) {
-            throw new InvalidEventException("Invalid event");
+            throw new ConflictException("Invalid event");
+        }
+
+        if (Objects.equals(eventDto.getStateAction(), "CANCEL_REVIEW")) {
+            return cancelUserEvent(userId, event.getId());
         }
 
         eventDto.setState(Status.PENDING);
@@ -68,7 +72,7 @@ public class UserServiceImpl implements UserService {
         }
         User initiator = initiatorOptional.get();
         if (eventDto.getEventDate().minusHours(2).isBefore(LocalDateTime.now())) {
-            throw new InvalidEventException("Invalid event");
+            throw new ConflictException("Invalid event");
         }
         eventDto.setInitiator(UserDtoMapper.toDtoShort(initiator));
         eventDto.setState(Status.PENDING);
@@ -131,8 +135,10 @@ public class UserServiceImpl implements UserService {
         }
         Long currentApproved = eventRepository.getApprovedCount(eventId);
         if (Objects.equals(Math.toIntExact(currentApproved), eventOptional.get().getParticipantLimit())) {
-            throw new InvalidEventException("Invalid event");
+            throw new ConflictException("Invalid event");
         }
+
+        System.out.println("\n\n\n\nAPPROVED" + currentApproved + " LIMIT: "+ eventOptional.get().getParticipantLimit() + "\n\n\n\n");
 
         Optional<Request> requestOptional = requestRepository.findById(requestId);
         if (requestOptional.isEmpty()) {
@@ -147,7 +153,7 @@ public class UserServiceImpl implements UserService {
                 requestRepository.save(r);
             }
         }
-        return EventMapper.requestToDto(request);
+        return EventMapper.requestToDto(requestRepository.save(request));
     }
 
     @Override
@@ -165,6 +171,9 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("Not found");
         }
         Request request = requestOptional.get();
+        if (request.getStatus().equals(RequestStatus.CONFIRMED)) {
+            throw new ConflictException("Status confirmed");
+        }
         request.setStatus(RequestStatus.REJECTED);
 
         return EventMapper.requestToDto(request);
@@ -198,14 +207,15 @@ public class UserServiceImpl implements UserService {
         if (Objects.equals(event.getInitiator().getId(), userId)) {
             throw new ConflictException("Request from initiator");
         }
-        if (!event.getRequestModeration()) {
-            return EventMapper.requestToDto(requestRepository.save(new Request(user, event, RequestStatus.CONFIRMED)));
-        }
 
         Long currentApproved = eventRepository.getApprovedCount(eventId);
         if (Objects.equals(Math.toIntExact(currentApproved), event.getParticipantLimit()) ||
                 event.getState() != Status.PUBLISHED) {
-            throw new InvalidEventException("Invalid event");
+            throw new ConflictException("Invalid event");
+        }
+
+        if (!event.getRequestModeration()) {
+            return EventMapper.requestToDto(requestRepository.save(new Request(user, event, RequestStatus.CONFIRMED)));
         }
         return EventMapper.requestToDto(requestRepository.save(new Request(user, event, RequestStatus.PENDING)));
     }

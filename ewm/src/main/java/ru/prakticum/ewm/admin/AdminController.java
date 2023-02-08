@@ -3,6 +3,7 @@ package ru.prakticum.ewm.admin;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.prakticum.ewm.category.dto.CategoryDto;
 import ru.prakticum.ewm.compilation.dto.CompilationDto;
@@ -49,11 +50,13 @@ public class AdminController {
     }
 
     @PostMapping(value = "/categories")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public CategoryDto addCategory(@RequestBody CategoryDto categoryDto) {
         return adminService.addCategory(categoryDto);
     }
 
     @DeleteMapping(value = "/categories/{categoryId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable int categoryId) {
         adminService.deleteCategory(categoryId);
     }
@@ -66,21 +69,25 @@ public class AdminController {
     }
 
     @PostMapping(value = "/users")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public UserDto addUser(@RequestBody UserDto userDto) {
         return adminService.addUser(userDto);
     }
 
     @DeleteMapping(value = "/users/{userId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable int userId) {
         adminService.deleteUser(userId);
     }
 
     @PostMapping(value = "/compilations")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public CompilationDto addCompilation(@RequestBody CompilationShortDto compilationShortDto) {
         return adminService.addCompilation(compilationShortDto);
     }
 
     @DeleteMapping(value = "/compilations/{compilationId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCompilation(@PathVariable int compilationId) {
         adminService.deleteCompilation(compilationId);
     }

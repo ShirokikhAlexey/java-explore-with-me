@@ -117,7 +117,7 @@ public final class EventMapper {
                     }
                     event.setState(Status.PUBLISHED);
                 }
-                if (Objects.equals(eventDto.getStateAction(), "REJECT_EVENT ")) {
+                if (Objects.equals(eventDto.getStateAction(), "REJECT_EVENT")) {
                     if (event.getState().equals(Status.PUBLISHED)) {
                         throw new ConflictException("Invalid state");
                     }

@@ -2,6 +2,7 @@ package ru.prakticum.ewm.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.prakticum.ewm.event.dto.EventDto;
 import ru.prakticum.ewm.event.dto.PatchRequestDto;
@@ -38,6 +39,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/{userId}/events")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public EventDto save(@PathVariable int userId, @RequestBody EventDto eventDto) {
         System.out.println(eventDto.toString());
         return userService.saveUserEvent(userId, eventDto);
@@ -78,6 +80,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/{userId}/requests")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public RequestDto addUserRequest(@PathVariable int userId, @RequestParam Integer eventId) {
         return userService.addUserRequest(userId, eventId);
     }
