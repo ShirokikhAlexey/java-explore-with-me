@@ -173,6 +173,15 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public CompilationDto updateCompilation(Integer compilationId, CompilationShortDto compilationShortDto) {
+        List<Event> events = eventRepository.findAllById(compilationShortDto.getEvents());
+        Compilation compilation = CompilationDtoMapper.fromDto(new CompilationDto(compilationShortDto.getId(),
+                compilationShortDto.getTitle(), compilationShortDto.getPinned()), events);
+        compilation.setId(compilationId);
+        return CompilationDtoMapper.toDto(compilationRepository.save(compilation));
+    }
+
+    @Override
     public CompilationDto deleteCompilationEvent(Integer compilationId, Integer eventId) {
         Optional<Compilation> compilationOptional = compilationRepository.findById(compilationId);
         if (compilationOptional.isEmpty()) {

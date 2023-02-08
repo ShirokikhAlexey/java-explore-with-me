@@ -37,6 +37,8 @@ public interface AdminService {
 
     void deleteCompilation(Integer compilationId);
 
+    CompilationDto updateCompilation(Integer compilationId, CompilationShortDto compilationShortDto);
+
     CompilationDto deleteCompilationEvent(Integer compilationId, Integer eventId);
 
     CompilationDto addEventCompilation(Integer compilationId, Integer eventId);

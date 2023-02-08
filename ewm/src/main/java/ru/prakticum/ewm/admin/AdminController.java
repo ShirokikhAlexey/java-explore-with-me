@@ -37,23 +37,14 @@ public class AdminController {
         return adminService.search(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
-    @PutMapping(value = "/events/{eventId}")
+    @PatchMapping(value = "/events/{eventId}")
     public EventDto update(@PathVariable int eventId, @RequestBody EventDto eventDto) {
         return adminService.update(eventId, eventDto);
     }
 
-    @PatchMapping(value = "/events/{eventId}/publish")
-    public EventDto publish(@PathVariable int eventId) {
-        return adminService.publish(eventId);
-    }
-
-    @PatchMapping(value = "/events/{eventId}/reject")
-    public EventDto reject(@PathVariable int eventId) {
-        return adminService.reject(eventId);
-    }
-
-    @PatchMapping(value = "/categories")
-    public CategoryDto updateCategory(@RequestBody CategoryDto categoryDto) {
+    @PatchMapping(value = "/categories/{categoryId}")
+    public CategoryDto updateCategory(@RequestBody CategoryDto categoryDto, @PathVariable int categoryId) {
+        categoryDto.setId(categoryId);
         return adminService.updateCategory(categoryDto);
     }
 
@@ -94,24 +85,9 @@ public class AdminController {
         adminService.deleteCompilation(compilationId);
     }
 
-    @DeleteMapping(value = "/compilations/{compilationId}/events/{eventId}")
-    public CompilationDto deleteCompilationEvent(@PathVariable int compilationId, @PathVariable int eventId) {
-        return adminService.deleteCompilationEvent(compilationId, eventId);
-    }
-
-    @PatchMapping(value = "/compilations/{compilationId}/events/{eventId}")
-    public CompilationDto addCompilationEvent(@PathVariable int compilationId, @PathVariable int eventId) {
-        return adminService.addEventCompilation(compilationId, eventId);
-    }
-
-    @PatchMapping(value = "/compilations/{compilationId}/pin")
-    public void pinCompilation(@PathVariable int compilationId) {
-        adminService.pinCompilation(compilationId);
-    }
-
-    @DeleteMapping(value = "/compilations/{compilationId}/pin")
-    public void unpinCompilation(@PathVariable int compilationId) {
-        adminService.unpinCompilation(compilationId);
+    @PatchMapping(value = "/compilations/{compilationId}")
+    public void updateCompilation(@PathVariable int compilationId, @RequestBody CompilationShortDto compilationShortDto) {
+        adminService.updateCompilation(compilationId, compilationShortDto);
     }
 
 }
