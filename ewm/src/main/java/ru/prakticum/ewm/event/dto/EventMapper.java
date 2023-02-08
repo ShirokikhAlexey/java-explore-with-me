@@ -125,7 +125,7 @@ public final class EventMapper {
                 }
             }
 
-                return event;
+            return event;
         } catch (NullPointerException e) {
             throw new ValidationException();
         }

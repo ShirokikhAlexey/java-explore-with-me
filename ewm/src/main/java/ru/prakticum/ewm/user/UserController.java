@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.prakticum.ewm.event.dto.EventDto;
 import ru.prakticum.ewm.event.dto.PatchRequestDto;
 import ru.prakticum.ewm.event.dto.RequestDto;
-import ru.prakticum.ewm.event.model.RequestStatus;
-import ru.prakticum.ewm.event.model.Status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,11 +55,11 @@ public class UserController {
 
     @PatchMapping(value = "/{userId}/events/{eventId}/requests")
     public HashMap<String, List<RequestDto>> approveRequest(@PathVariable int userId, @PathVariable int eventId,
-                                  @RequestBody PatchRequestDto requestDto) {
+                                                            @RequestBody PatchRequestDto requestDto) {
         HashMap<String, List<RequestDto>> response = new HashMap<>();
         response.put("confirmedRequests", new ArrayList<>());
         response.put("rejectedRequests", new ArrayList<>());
-        for(Integer requestId : requestDto.getRequestIds()) {
+        for (Integer requestId : requestDto.getRequestIds()) {
             switch (requestDto.getStatus()) {
                 case CONFIRMED:
                     response.get("confirmedRequests").add(userService.approveRequest(userId, eventId, requestId));
