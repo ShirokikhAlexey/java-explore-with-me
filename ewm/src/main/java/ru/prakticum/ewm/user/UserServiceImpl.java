@@ -138,14 +138,13 @@ public class UserServiceImpl implements UserService {
             throw new ConflictException("Invalid event");
         }
 
-        System.out.println("\n\n\n\nAPPROVED" + currentApproved + " LIMIT: "+ eventOptional.get().getParticipantLimit() + "\n\n\n\n");
-
         Optional<Request> requestOptional = requestRepository.findById(requestId);
         if (requestOptional.isEmpty()) {
             throw new NotFoundException("Not found");
         }
         Request request = requestOptional.get();
         request.setStatus(RequestStatus.CONFIRMED);
+        requestRepository.save(request);
 
         if (Objects.equals(Math.toIntExact(currentApproved) + 1, eventOptional.get().getParticipantLimit())) {
             for (Request r : requestRepository.getEventRequestsPending(eventId)) {
@@ -153,7 +152,7 @@ public class UserServiceImpl implements UserService {
                 requestRepository.save(r);
             }
         }
-        return EventMapper.requestToDto(requestRepository.save(request));
+        return EventMapper.requestToDto(request);
     }
 
     @Override
@@ -171,7 +170,7 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("Not found");
         }
         Request request = requestOptional.get();
-        if (request.getStatus().equals(RequestStatus.CONFIRMED)) {
+        if (request.getStatus().equals(RequestStatus.CONFIRMED) || request.getStatus().equals(RequestStatus.REJECTED)) {
             throw new ConflictException("Status confirmed");
         }
         request.setStatus(RequestStatus.REJECTED);

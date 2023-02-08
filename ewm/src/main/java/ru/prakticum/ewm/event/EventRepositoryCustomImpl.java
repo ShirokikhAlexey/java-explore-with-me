@@ -102,7 +102,6 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
         criteriaQuery.select(cb.count(root));
         criteriaQuery.where(cb.and(cb.equal(root.get("status"), RequestStatus.CONFIRMED),
                 cb.equal(root.get("event").get("id"), id)));
-        criteriaQuery.groupBy(root.get("event"));
         try {
             return em.createQuery(criteriaQuery).getSingleResult();
         } catch (NoResultException e) {
