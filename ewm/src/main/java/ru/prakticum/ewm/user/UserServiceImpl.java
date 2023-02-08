@@ -186,16 +186,16 @@ public class UserServiceImpl implements UserService {
     public RequestDto addUserRequest(Integer userId, Integer eventId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
-            throw new NotFoundException("Not found");
+            throw new NotFoundException("User Not found");
         }
         User user = userOptional.get();
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
-            throw new InvalidEventException("Invalid event");
+            throw new InvalidEventException("Event not found");
         }
         Event event = eventOptional.get();
         if (Objects.equals(event.getInitiator().getId(), userId)) {
-            throw new InvalidEventException("Invalid event");
+            throw new InvalidEventException("Request from initiator");
         }
         if (!event.getRequestModeration()) {
             return EventMapper.requestToDto(requestRepository.save(new Request(user, event, RequestStatus.CONFIRMED)));

@@ -5,11 +5,13 @@ import ru.prakticum.ewm.category.model.Category;
 import ru.prakticum.ewm.event.model.Event;
 import ru.prakticum.ewm.event.model.Location;
 import ru.prakticum.ewm.event.model.Request;
+import ru.prakticum.ewm.event.model.Status;
 import ru.prakticum.ewm.user.dto.UserDtoMapper;
 
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class EventMapper {
     public static EventDto toDto(Event event, Integer confirmedRequests) {
@@ -103,8 +105,16 @@ public final class EventMapper {
             if (eventDto.getTitle() != null) {
                 event.setTitle(eventDto.getTitle());
             }
+            if (eventDto.getStateAction() != null) {
+                if (Objects.equals(eventDto.getStateAction(), "PUBLISH_EVENT")) {
+                    event.setState(Status.PUBLISHED);
+                }
+                if (Objects.equals(eventDto.getStateAction(), "REJECT_EVENT ")) {
+                    event.setState(Status.CANCELED);
+                }
+            }
 
-            return event;
+                return event;
         } catch (NullPointerException e) {
             throw new ValidationException();
         }

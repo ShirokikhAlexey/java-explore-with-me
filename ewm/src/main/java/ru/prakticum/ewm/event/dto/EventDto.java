@@ -39,6 +39,7 @@ public class EventDto {
     private Status state;
     private String title;
     private Integer views;
+    private String stateAction;
 
     public EventDto(Integer id, String annotation, CategoryDto category, Integer confirmedRequests,
                     LocalDateTime createdOn, String description, LocalDateTime eventDate, UserShortDto initiator,
@@ -99,5 +100,9 @@ public class EventDto {
         this.state = state;
         this.title = title;
         this.views = views;
+    }
+
+    public EventDto(String stateAction) {
+        this.stateAction = stateAction;
     }
 }

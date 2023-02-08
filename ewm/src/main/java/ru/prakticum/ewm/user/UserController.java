@@ -10,6 +10,7 @@ import ru.prakticum.ewm.event.model.RequestStatus;
 import ru.prakticum.ewm.event.model.Status;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -53,16 +54,18 @@ public class UserController {
     }
 
     @PatchMapping(value = "/{userId}/events/{eventId}/requests")
-    public List<RequestDto> approveRequest(@PathVariable int userId, @PathVariable int eventId,
-                                           @RequestBody PatchRequestDto requestDto) {
-        List<RequestDto> response = new ArrayList<>();
+    public HashMap<String, List<RequestDto>> approveRequest(@PathVariable int userId, @PathVariable int eventId,
+                                  @RequestBody PatchRequestDto requestDto) {
+        HashMap<String, List<RequestDto>> response = new HashMap<>();
+        response.put("confirmedRequests", new ArrayList<>());
+        response.put("rejectedRequests", new ArrayList<>());
         for(Integer requestId : requestDto.getRequestIds()) {
             switch (requestDto.getStatus()) {
                 case CONFIRMED:
-                    response.add(userService.approveRequest(userId, eventId, requestId));
+                    response.get("confirmedRequests").add(userService.approveRequest(userId, eventId, requestId));
                     break;
                 case REJECTED:
-                    response.add(userService.rejectRequest(userId, eventId, requestId));
+                    response.get("rejectedRequests").add(userService.rejectRequest(userId, eventId, requestId));
                     break;
             }
         }
