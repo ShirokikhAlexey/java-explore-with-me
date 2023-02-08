@@ -42,14 +42,14 @@ public class EventController {
         if (from < 0 || size < 0) {
             throw new ValidationException();
         }
-        //statClient.saveRequest("/events", request.getRemoteAddr(), LocalDateTime.now());
+        statClient.saveRequest("/events", request.getRemoteAddr(), LocalDateTime.now());
         return eventService.searchEventsShort(text, categories, paid, rangeStart, rangeEnd, onlyAvailable,
                 sort, from, size);
     }
 
     @GetMapping(value = "/{eventId}")
     public EventDto get(@PathVariable int eventId, HttpServletRequest request) {
-        //statClient.saveRequest("/events/" + eventId, request.getRemoteAddr(), LocalDateTime.now());
+        statClient.saveRequest("/events/" + eventId, request.getRemoteAddr(), LocalDateTime.now());
         return eventService.getShort(eventId);
     }
 }
