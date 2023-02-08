@@ -1,7 +1,6 @@
 package ru.prakticum.ewm.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.prakticum.ewm.category.dto.CategoryDto;
