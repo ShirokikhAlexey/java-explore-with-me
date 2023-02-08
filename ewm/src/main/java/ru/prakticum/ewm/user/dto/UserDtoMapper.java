@@ -2,9 +2,16 @@ package ru.prakticum.ewm.user.dto;
 
 import ru.prakticum.ewm.user.model.User;
 
+import javax.validation.ValidationException;
+
 public final class UserDtoMapper {
     public static User fromDto(UserShortDto userShortDto) {
-        return new User(userShortDto.getId(), userShortDto.getName());
+        try {
+            return new User(userShortDto.getId(), userShortDto.getName());
+        } catch (NullPointerException e) {
+            throw new ValidationException();
+        }
+
     }
 
     public static UserShortDto toDtoShort(User user) {
@@ -16,6 +23,11 @@ public final class UserDtoMapper {
     }
 
     public static User fromDto(UserDto userDto) {
-        return new User(userDto.getId(), userDto.getName(), userDto.getEmail());
+        try {
+            return new User(userDto.getId(), userDto.getName(), userDto.getEmail());
+        } catch (NullPointerException e) {
+            throw new ValidationException();
+        }
+
     }
 }

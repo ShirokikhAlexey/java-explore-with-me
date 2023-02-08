@@ -4,8 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.prakticum.ewm.event.dto.EventDto;
+import ru.prakticum.ewm.event.dto.PatchRequestDto;
 import ru.prakticum.ewm.event.dto.RequestDto;
+import ru.prakticum.ewm.event.model.RequestStatus;
+import ru.prakticum.ewm.event.model.Status;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -48,14 +52,21 @@ public class UserController {
         return userService.getUserEventRequests(userId, eventId);
     }
 
-    @PatchMapping(value = "/{userId}/events/{eventId}/requests/{requestId}/confirm")
-    public RequestDto approveRequest(@PathVariable int userId, @PathVariable int eventId, @PathVariable int requestId) {
-        return userService.approveRequest(userId, eventId, requestId);
-    }
-
-    @PatchMapping(value = "/{userId}/events/{eventId}/requests/{requestId}/reject")
-    public RequestDto rejectRequest(@PathVariable int userId, @PathVariable int eventId, @PathVariable int requestId) {
-        return userService.rejectRequest(userId, eventId, requestId);
+    @PatchMapping(value = "/{userId}/events/{eventId}/requests")
+    public List<RequestDto> approveRequest(@PathVariable int userId, @PathVariable int eventId,
+                                           @RequestBody PatchRequestDto requestDto) {
+        List<RequestDto> response = new ArrayList<>();
+        for(Integer requestId : requestDto.getRequestIds()) {
+            switch (requestDto.getStatus()) {
+                case CONFIRMED:
+                    response.add(userService.approveRequest(userId, eventId, requestId));
+                    break;
+                case REJECTED:
+                    response.add(userService.rejectRequest(userId, eventId, requestId));
+                    break;
+            }
+        }
+        return response;
     }
 
     @GetMapping(value = "/{userId}/requests")

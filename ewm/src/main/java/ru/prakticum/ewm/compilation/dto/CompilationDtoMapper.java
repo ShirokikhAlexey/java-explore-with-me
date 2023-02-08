@@ -5,6 +5,7 @@ import ru.prakticum.ewm.event.dto.EventMapper;
 import ru.prakticum.ewm.event.dto.EventShortDto;
 import ru.prakticum.ewm.event.model.Event;
 
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,11 @@ public final class CompilationDtoMapper {
     }
 
     public static Compilation fromDto(CompilationDto compilationDto, List<Event> events) {
-
-        return new Compilation(compilationDto.getId(), compilationDto.getTitle(), compilationDto.getPinned(),
-                events);
+        try {
+            return new Compilation(compilationDto.getId(), compilationDto.getTitle(), compilationDto.getPinned(),
+                    events);
+        } catch (NullPointerException e) {
+            throw new ValidationException();
+        }
     }
 }

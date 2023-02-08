@@ -7,6 +7,7 @@ import ru.prakticum.ewm.event.model.Location;
 import ru.prakticum.ewm.event.model.Request;
 import ru.prakticum.ewm.user.dto.UserDtoMapper;
 
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,20 +32,29 @@ public final class EventMapper {
     }
 
     public static Event fromDtoShort(EventShortDto eventDto) {
-        return new Event(eventDto.getId(), eventDto.getAnnotation(), null,
-                List.of(CategoryDtoMapper.fromDto(eventDto.getCategory())),
-                eventDto.getEventDate(), UserDtoMapper.fromDto(eventDto.getInitiator()),
-                eventDto.getPaid(), eventDto.getTitle(),
-                eventDto.getViews());
+        try {
+            return new Event(eventDto.getId(), eventDto.getAnnotation(), null,
+                    List.of(CategoryDtoMapper.fromDto(eventDto.getCategory())),
+                    eventDto.getEventDate(), UserDtoMapper.fromDto(eventDto.getInitiator()),
+                    eventDto.getPaid(), eventDto.getTitle(),
+                    eventDto.getViews());
+        } catch (NullPointerException e) {
+            throw new ValidationException();
+        }
     }
 
     public static Event fromDto(EventDto eventDto) {
-        return new Event(eventDto.getId(), eventDto.getAnnotation(), eventDto.getDescription(),
-                List.of(CategoryDtoMapper.fromDto(eventDto.getCategory())),
-                eventDto.getEventDate(), UserDtoMapper.fromDto(eventDto.getInitiator()),
-                eventDto.getPaid(), eventDto.getTitle(),
-                eventDto.getViews(), eventDto.getCreatedOn(), eventDto.getState(), eventDto.getParticipantLimit(), eventDto.getLocation(),
-                eventDto.getRequestModeration());
+        try {
+            return new Event(eventDto.getId(), eventDto.getAnnotation(), eventDto.getDescription(),
+                    List.of(CategoryDtoMapper.fromDto(eventDto.getCategory())),
+                    eventDto.getEventDate(), UserDtoMapper.fromDto(eventDto.getInitiator()),
+                    eventDto.getPaid(), eventDto.getTitle(),
+                    eventDto.getViews(), eventDto.getCreatedOn(), eventDto.getState(), eventDto.getParticipantLimit(), eventDto.getLocation(),
+                    eventDto.getRequestModeration());
+        } catch (NullPointerException e) {
+            throw new ValidationException();
+        }
+
     }
 
     public static EventShortDto toDtoShort(Event event, Integer confirmedRequests) {
@@ -58,42 +68,47 @@ public final class EventMapper {
     }
 
     public static Event updateEvent(Event event, EventDto eventDto) {
-        if (eventDto.getAnnotation() != null) {
-            event.setAnnotation(eventDto.getAnnotation());
-        }
-        if (eventDto.getCategory() != null) {
-            List<Category> categories = new ArrayList<>();
-            categories.add(CategoryDtoMapper.fromDto(eventDto.getCategory()));
-            event.setCategories(categories);
-        }
-        if (eventDto.getDescription() != null) {
-            event.setDescription(eventDto.getDescription());
-        }
-        if (eventDto.getEventDate() != null) {
-            event.setEventDate(eventDto.getEventDate());
-        }
-        if (eventDto.getInitiator() != null) {
-            event.setInitiator(UserDtoMapper.fromDto(eventDto.getInitiator()));
-        }
-        if (eventDto.getLocation() != null) {
-            List<Location> locations = new ArrayList<>();
-            locations.add(eventDto.getLocation());
-            event.setLocations(locations);
-        }
-        if (eventDto.getPaid() != null) {
-            event.setPaid(eventDto.getPaid());
-        }
-        if (eventDto.getParticipantLimit() != null) {
-            event.setParticipantLimit(eventDto.getParticipantLimit());
-        }
-        if (eventDto.getState() != null) {
-            event.setState(eventDto.getState());
-        }
-        if (eventDto.getTitle() != null) {
-            event.setTitle(eventDto.getTitle());
+        try {
+            if (eventDto.getAnnotation() != null) {
+                event.setAnnotation(eventDto.getAnnotation());
+            }
+            if (eventDto.getCategory() != null) {
+                List<Category> categories = new ArrayList<>();
+                categories.add(CategoryDtoMapper.fromDto(eventDto.getCategory()));
+                event.setCategories(categories);
+            }
+            if (eventDto.getDescription() != null) {
+                event.setDescription(eventDto.getDescription());
+            }
+            if (eventDto.getEventDate() != null) {
+                event.setEventDate(eventDto.getEventDate());
+            }
+            if (eventDto.getInitiator() != null) {
+                event.setInitiator(UserDtoMapper.fromDto(eventDto.getInitiator()));
+            }
+            if (eventDto.getLocation() != null) {
+                List<Location> locations = new ArrayList<>();
+                locations.add(eventDto.getLocation());
+                event.setLocations(locations);
+            }
+            if (eventDto.getPaid() != null) {
+                event.setPaid(eventDto.getPaid());
+            }
+            if (eventDto.getParticipantLimit() != null) {
+                event.setParticipantLimit(eventDto.getParticipantLimit());
+            }
+            if (eventDto.getState() != null) {
+                event.setState(eventDto.getState());
+            }
+            if (eventDto.getTitle() != null) {
+                event.setTitle(eventDto.getTitle());
+            }
+
+            return event;
+        } catch (NullPointerException e) {
+            throw new ValidationException();
         }
 
-        return event;
     }
 
     public static RequestDto requestToDto(Request request) {
