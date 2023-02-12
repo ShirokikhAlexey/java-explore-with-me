@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.admin;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,15 +16,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping(path = "/admin")
 public class AdminController {
     private final AdminService adminService;
-
-    @Autowired
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
-    }
 
     @GetMapping(value = "/events")
     public List<EventDto> get(@RequestParam(required = false) List<Integer> users,

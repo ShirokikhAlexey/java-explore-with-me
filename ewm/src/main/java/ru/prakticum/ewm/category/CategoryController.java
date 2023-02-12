@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.category;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,15 +10,11 @@ import javax.validation.ValidationException;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping(path = "/categories")
 public class CategoryController {
     private final CategoryService categoryService;
-
-    @Autowired
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @GetMapping
     public List<CategoryDto> get(@RequestParam(defaultValue = "1", required = false) Integer from,

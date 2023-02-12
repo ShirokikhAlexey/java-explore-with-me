@@ -1,9 +1,12 @@
 package ru.prakticum.ewm.category.dto;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.prakticum.ewm.category.model.Category;
 
 import javax.validation.ValidationException;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CategoryDtoMapper {
     public static CategoryDto toDto(Category category) {
         return new CategoryDto(category.getId(), category.getName());

@@ -1,9 +1,12 @@
 package ru.prakticum.ewm.user.dto;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.prakticum.ewm.user.model.User;
 
 import javax.validation.ValidationException;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class UserDtoMapper {
     public static User fromDto(UserShortDto userShortDto) {
         try {

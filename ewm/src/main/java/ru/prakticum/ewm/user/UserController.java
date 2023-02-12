@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.user;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,15 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping(value = "/{userId}/events")
     public List<EventDto> get(@PathVariable int userId,

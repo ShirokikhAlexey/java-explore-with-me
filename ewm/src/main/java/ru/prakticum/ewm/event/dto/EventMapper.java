@@ -1,5 +1,7 @@
 package ru.prakticum.ewm.event.dto;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.prakticum.ewm.category.dto.CategoryDtoMapper;
 import ru.prakticum.ewm.category.model.Category;
 import ru.prakticum.ewm.event.model.Event;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EventMapper {
     public static EventDto toDto(Event event, Integer confirmedRequests) {
         EventDto eventDto = new EventDto(event.getId(), event.getAnnotation(),

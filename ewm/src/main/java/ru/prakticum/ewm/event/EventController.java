@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.event;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,17 +15,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping(path = "/events")
 public class EventController {
     private final EventService eventService;
     private final StatClient statClient;
-
-    @Autowired
-    public EventController(EventService eventService, StatClient statClient) {
-        this.eventService = eventService;
-        this.statClient = statClient;
-    }
 
     @GetMapping
     public List<EventShortDto> getState(@RequestParam(required = false) String text,

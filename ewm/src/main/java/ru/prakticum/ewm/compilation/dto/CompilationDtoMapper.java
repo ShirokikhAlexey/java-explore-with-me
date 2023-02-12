@@ -1,5 +1,7 @@
 package ru.prakticum.ewm.compilation.dto;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.prakticum.ewm.compilation.model.Compilation;
 import ru.prakticum.ewm.event.dto.EventMapper;
 import ru.prakticum.ewm.event.dto.EventShortDto;
@@ -9,6 +11,7 @@ import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CompilationDtoMapper {
     public static CompilationDto toDto(Compilation compilation) {
         List<EventShortDto> events = new ArrayList<>();

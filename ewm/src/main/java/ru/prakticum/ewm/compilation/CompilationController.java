@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.compilation;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,16 +10,11 @@ import javax.validation.ValidationException;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping(path = "/compilations")
 public class CompilationController {
     private final CompilationService compilationService;
-
-    @Autowired
-    public CompilationController(CompilationService compilationService) {
-        this.compilationService = compilationService;
-    }
-
 
     @GetMapping
     public List<CompilationDto> getState(@RequestParam(required = false) Boolean pinned,
