@@ -93,5 +93,4 @@ public class AdminController {
     public void updateCompilation(@PathVariable int compilationId, @RequestBody CompilationShortDto compilationShortDto) {
         adminService.updateCompilation(compilationId, compilationShortDto);
     }
-
 }

@@ -45,5 +45,4 @@ public class StatClient {
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         return headers;
     }
-
 }

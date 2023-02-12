@@ -108,6 +108,4 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
             return 0L;
         }
     }
-
-
 }

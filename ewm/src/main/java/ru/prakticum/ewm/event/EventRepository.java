@@ -8,8 +8,8 @@ import ru.prakticum.ewm.event.model.Event;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Integer>, EventRepositoryCustom {
-    @Query(value = "select e " +
-            "from Event as e " +
-            "where e.initiator.id = ?1 ")
+    @Query(value = "SELECT e " +
+            "FROM Event AS e " +
+            "WHERE e.initiator.id = ?1 ")
     List<Event> getUserEvents(Integer userId, Pageable pageable);
 }

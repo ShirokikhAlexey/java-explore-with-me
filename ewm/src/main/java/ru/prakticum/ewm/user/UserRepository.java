@@ -8,12 +8,12 @@ import ru.prakticum.ewm.user.model.User;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Integer>, UserRepositoryCustom {
-    @Query(value = "select u " +
-            "from User as u " +
-            "where u.id in ?1 ")
+    @Query(value = "SELECT u " +
+            "FROM User AS u " +
+            "WHERE u.id IN ?1 ")
     List<User> searchUsers(List<Integer> users, Pageable pageable);
 
-    @Query(value = "select u " +
-            "from User as u ")
+    @Query(value = "SELECT u " +
+            "FROM User AS u ")
     List<User> searchUsers(Pageable pageable);
 }
