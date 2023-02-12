@@ -1,6 +1,7 @@
 package ru.prakticum.ewm.compilation.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import ru.prakticum.ewm.event.model.Event;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -45,9 +47,6 @@ public class Compilation {
             inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
     private List<Event> events;
-
-    public Compilation() {
-    }
 
     public Compilation(Integer id, String title, Boolean pinned, List<Event> events) {
         this.id = id;

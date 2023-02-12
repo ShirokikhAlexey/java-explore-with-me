@@ -2,6 +2,7 @@ package ru.prakticum.ewm.event.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import ru.prakticum.ewm.user.model.User;
@@ -9,6 +10,7 @@ import ru.prakticum.ewm.user.model.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -46,8 +48,5 @@ public class Request {
         this.status = status;
         this.event = event;
         this.user = user;
-    }
-
-    public Request() {
     }
 }

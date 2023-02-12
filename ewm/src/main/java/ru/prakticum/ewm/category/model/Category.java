@@ -1,6 +1,7 @@
 package ru.prakticum.ewm.category.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import ru.prakticum.ewm.event.model.Event;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -36,9 +38,6 @@ public class Category {
 
     @ManyToMany(mappedBy = "categories")
     private List<Event> events;
-
-    public Category() {
-    }
 
     public Category(Integer id, String name) {
         this.id = id;

@@ -2,12 +2,14 @@ package ru.prakticum.ewm.event.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -38,7 +40,4 @@ public class Location {
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
-
-    public Location() {
-    }
 }

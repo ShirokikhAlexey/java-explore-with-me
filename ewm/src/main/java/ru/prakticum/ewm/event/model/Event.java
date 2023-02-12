@@ -2,6 +2,7 @@ package ru.prakticum.ewm.event.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -108,9 +110,6 @@ public class Event {
 
     @OneToMany(mappedBy = "event")
     private List<Request> requests;
-
-    public Event() {
-    }
 
     public Event(Integer id, String annotation, String description,
                  List<Category> categories, LocalDateTime eventDate, User initiator,
