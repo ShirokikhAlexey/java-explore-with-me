@@ -1,9 +1,10 @@
-package ru.prakticum.ewm.event.model;
+package ru.prakticum.ewm.location.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
+import ru.prakticum.ewm.event.model.Event;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

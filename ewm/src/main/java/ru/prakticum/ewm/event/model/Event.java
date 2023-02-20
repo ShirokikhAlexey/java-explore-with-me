@@ -9,6 +9,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import ru.prakticum.ewm.category.model.Category;
 import ru.prakticum.ewm.compilation.model.Compilation;
+import ru.prakticum.ewm.location.model.Location;
 import ru.prakticum.ewm.user.model.User;
 
 import javax.persistence.*;

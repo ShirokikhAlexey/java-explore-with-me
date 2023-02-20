@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import ru.prakticum.ewm.category.dto.CategoryDtoMapper;
 import ru.prakticum.ewm.category.model.Category;
 import ru.prakticum.ewm.event.model.Event;
-import ru.prakticum.ewm.event.model.Location;
+import ru.prakticum.ewm.location.model.Location;
 import ru.prakticum.ewm.event.model.Request;
 import ru.prakticum.ewm.event.model.Status;
 import ru.prakticum.ewm.exception.ConflictException;
