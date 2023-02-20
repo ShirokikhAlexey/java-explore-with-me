@@ -56,7 +56,12 @@ public class Event {
     @JoinColumn(name = "author_id")
     private User initiator;
 
-    @OneToMany(mappedBy = "event")
+    @ManyToMany()
+    @JoinTable(
+            name = "event_collection",
+            joinColumns = {@JoinColumn(name = "event_id")},
+            inverseJoinColumns = {@JoinColumn(name = "location_id")}
+    )
     private List<Location> locations;
 
     @NonNull
