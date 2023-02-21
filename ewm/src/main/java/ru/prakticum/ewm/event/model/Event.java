@@ -59,7 +59,7 @@ public class Event {
 
     @ManyToMany()
     @JoinTable(
-            name = "event_collection",
+            name = "event_location",
             joinColumns = {@JoinColumn(name = "event_id")},
             inverseJoinColumns = {@JoinColumn(name = "location_id")}
     )

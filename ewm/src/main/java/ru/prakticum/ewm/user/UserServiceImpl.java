@@ -15,6 +15,8 @@ import ru.prakticum.ewm.event.model.Status;
 import ru.prakticum.ewm.exception.ConflictException;
 import ru.prakticum.ewm.exception.InvalidEventException;
 import ru.prakticum.ewm.exception.NotFoundException;
+import ru.prakticum.ewm.location.LocationRepository;
+import ru.prakticum.ewm.location.model.Location;
 import ru.prakticum.ewm.user.dto.UserDtoMapper;
 import ru.prakticum.ewm.user.model.User;
 
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
+    private final LocationRepository locationRepository;
 
     @Override
     public List<EventDto> getUserEvents(Integer userId, Integer from, Integer size) {
@@ -47,6 +50,13 @@ public class UserServiceImpl implements UserService {
         Optional<Event> eventOptional = eventRepository.findById(eventDto.getId());
         if (eventOptional.isEmpty()) {
             throw new InvalidEventException("Invalid event");
+        }
+        List<Location> locations = locationRepository.getByCoordinates(eventDto.getLocation().getLat(), eventDto.getLocation().getLon());
+        if (locations.isEmpty()) {
+            Location created = locationRepository.save(eventDto.getLocation());
+            eventDto.getLocation().setId(created.getId());
+        } else {
+            eventDto.getLocation().setId(locations.get(0).getId());
         }
         Event event = eventOptional.get();
         if (!Objects.equals(event.getInitiator().getId(), userId) ||
@@ -69,6 +79,13 @@ public class UserServiceImpl implements UserService {
         Optional<User> initiatorOptional = userRepository.findById(userId);
         if (initiatorOptional.isEmpty()) {
             throw new NotFoundException("Not found");
+        }
+        List<Location> locations = locationRepository.getByCoordinates(eventDto.getLocation().getLat(), eventDto.getLocation().getLon());
+        if (locations.isEmpty()) {
+            Location created = locationRepository.save(eventDto.getLocation());
+            eventDto.getLocation().setId(created.getId());
+        } else {
+            eventDto.getLocation().setId(locations.get(0).getId());
         }
         User initiator = initiatorOptional.get();
         if (eventDto.getEventDate().minusHours(2).isBefore(LocalDateTime.now())) {
