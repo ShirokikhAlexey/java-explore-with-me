@@ -12,7 +12,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Service
-public class LocationRepositoryCustomImpl implements LocationRepositoryCustom{
+public class LocationRepositoryCustomImpl implements LocationRepositoryCustom {
     @PersistenceContext
     private EntityManager em;
 
@@ -29,7 +29,7 @@ public class LocationRepositoryCustomImpl implements LocationRepositoryCustom{
             predicate = cb.and(predicate, predicateLat);
         }
         if (lon != null) {
-            Predicate predicateLon= cb.equal(locationRoot.get("lon"), lon);
+            Predicate predicateLon = cb.equal(locationRoot.get("lon"), lon);
             predicate = cb.and(predicate, predicateLon);
         }
 

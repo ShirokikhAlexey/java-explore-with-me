@@ -122,6 +122,6 @@ public class AdminController {
                                           @RequestParam(required = false, defaultValue = "1") Float radius,
                                           @RequestParam(defaultValue = "1", required = false) Integer from,
                                           @RequestParam(defaultValue = "10", required = false) Integer size) {
-        return locationService.search(lat, lon, radius,from, size);
+        return locationService.search(lat, lon, radius, from, size);
     }
 }

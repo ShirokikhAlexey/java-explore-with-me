@@ -1,23 +1,22 @@
 package ru.prakticum.ewm.util;
 
 import java.util.Objects;
-import java.lang.Math;
 
 public class CustomSqlFunctions {
-    public static double getDistance(double lat1, double lon1, double lat2, double lon2)  {
+    public static double getDistance(double lat1, double lon1, double lat2, double lon2) {
         double dist = 0;
-        double rad_lat1;
-        double rad_lat2;
+        double radLat1;
+        double radLat2;
         double theta;
-        double rad_theta;
+        double radTheta;
         if (Objects.equals(lat1, lat2) && Objects.equals(lon1, lon2)) {
             return dist;
         }
-        rad_lat1 = Math.PI * lat1 / 180;
-        rad_lat2 = Math.PI * lat2 / 180;
+        radLat1 = Math.PI * lat1 / 180;
+        radLat2 = Math.PI * lat2 / 180;
         theta = lon1 - lon2;
-        rad_theta = Math.PI * theta / 180;
-        dist = Math.sin(rad_lat1) * Math.sin(rad_lat2) + Math.cos(rad_lat1) * Math.cos(rad_lat2) * Math.cos(rad_theta);
+        radTheta = Math.PI * theta / 180;
+        dist = Math.sin(radLat1) * Math.sin(radLat2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
 
         if (dist > 1) {
             dist = 1;
