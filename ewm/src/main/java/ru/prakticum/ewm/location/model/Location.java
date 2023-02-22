@@ -32,11 +32,11 @@ public class Location {
     private String description;
 
     @NonNull
-    @Column(name = "dtc", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "dtc", nullable = false, columnDefinition = "TIMESTAMP", insertable = false)
     private LocalDateTime dtc;
 
     @NonNull
-    @Column(name = "dtu", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "dtu", columnDefinition = "TIMESTAMP", insertable = false)
     private LocalDateTime dtu;
 
     @ManyToMany()
