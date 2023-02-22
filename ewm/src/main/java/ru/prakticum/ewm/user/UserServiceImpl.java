@@ -51,13 +51,6 @@ public class UserServiceImpl implements UserService {
         if (eventOptional.isEmpty()) {
             throw new InvalidEventException("Invalid event");
         }
-        List<Location> locations = locationRepository.getByCoordinates(eventDto.getLocation().getLat(), eventDto.getLocation().getLon());
-        if (locations.isEmpty()) {
-            Location created = locationRepository.save(eventDto.getLocation());
-            eventDto.getLocation().setId(created.getId());
-        } else {
-            eventDto.getLocation().setId(locations.get(0).getId());
-        }
         Event event = eventOptional.get();
         if (!Objects.equals(event.getInitiator().getId(), userId) ||
                 event.getState() != Status.PENDING && event.getState() != Status.CANCELED ||
@@ -79,13 +72,6 @@ public class UserServiceImpl implements UserService {
         Optional<User> initiatorOptional = userRepository.findById(userId);
         if (initiatorOptional.isEmpty()) {
             throw new NotFoundException("Not found");
-        }
-        List<Location> locations = locationRepository.getByCoordinates(eventDto.getLocation().getLat(), eventDto.getLocation().getLon());
-        if (locations.isEmpty()) {
-            Location created = locationRepository.save(eventDto.getLocation());
-            eventDto.getLocation().setId(created.getId());
-        } else {
-            eventDto.getLocation().setId(locations.get(0).getId());
         }
         User initiator = initiatorOptional.get();
         if (eventDto.getEventDate().minusHours(2).isBefore(LocalDateTime.now())) {

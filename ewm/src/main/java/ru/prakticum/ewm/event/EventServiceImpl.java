@@ -30,13 +30,6 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto create(EventDto eventDto) throws InvalidEventException {
-        List<Location> locations = locationRepository.getByCoordinates(eventDto.getLocation().getLat(), eventDto.getLocation().getLon());
-        if (locations.isEmpty()) {
-            Location created = locationRepository.save(eventDto.getLocation());
-            eventDto.getLocation().setId(created.getId());
-        } else {
-            eventDto.getLocation().setId(locations.get(0).getId());
-        }
         return EventMapper.toDto(repository.save(EventMapper.fromDto(eventDto)));
     }
 
