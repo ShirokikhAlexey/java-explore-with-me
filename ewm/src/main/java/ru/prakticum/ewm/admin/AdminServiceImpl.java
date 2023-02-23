@@ -20,6 +20,8 @@ import ru.prakticum.ewm.event.model.Status;
 import ru.prakticum.ewm.exception.ConflictException;
 import ru.prakticum.ewm.exception.InvalidEventException;
 import ru.prakticum.ewm.exception.NotFoundException;
+import ru.prakticum.ewm.location.LocationRepository;
+import ru.prakticum.ewm.location.model.Location;
 import ru.prakticum.ewm.user.UserRepository;
 import ru.prakticum.ewm.user.dto.UserDto;
 import ru.prakticum.ewm.user.dto.UserDtoMapper;
@@ -38,6 +40,7 @@ public class AdminServiceImpl implements AdminService {
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
     private final CompilationRepository compilationRepository;
+    private final LocationRepository locationRepository;
 
     @Override
     public List<EventDto> search(List<Integer> users, List<String> states, List<Integer> categories,
@@ -54,6 +57,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public EventDto update(Integer eventId, EventDto eventDto) {
+        if (eventDto.getLocation() != null) {
+            List<Location> locations = locationRepository.getByCoordinates(eventDto.getLocation().getLat(), eventDto.getLocation().getLat());
+            if (locations.isEmpty()) {
+                Location saved = locationRepository.save(eventDto.getLocation());
+                eventDto.getLocation().setId(saved.getId());
+            } else {
+                eventDto.getLocation().setId(locations.get(0).getId());
+            }
+        }
+
         Optional<Event> eventOptional = eventRepository.findById(eventId);
         if (eventOptional.isEmpty()) {
             throw new InvalidEventException("Invalid event");

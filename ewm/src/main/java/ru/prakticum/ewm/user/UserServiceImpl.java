@@ -77,6 +77,15 @@ public class UserServiceImpl implements UserService {
         if (eventDto.getEventDate().minusHours(2).isBefore(LocalDateTime.now())) {
             throw new ConflictException("Invalid event");
         }
+
+        List<Location> locations = locationRepository.getByCoordinates(eventDto.getLocation().getLat(), eventDto.getLocation().getLat());
+        if (locations.isEmpty()) {
+            Location saved = locationRepository.save(eventDto.getLocation());
+            eventDto.getLocation().setId(saved.getId());
+        } else {
+            eventDto.getLocation().setId(locations.get(0).getId());
+        }
+
         eventDto.setInitiator(UserDtoMapper.toDtoShort(initiator));
         eventDto.setState(Status.PENDING);
         return EventMapper.toDto(eventRepository.save(EventMapper.fromDto(eventDto)));

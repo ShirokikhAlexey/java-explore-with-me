@@ -1,5 +1,6 @@
 package ru.prakticum.ewm.location.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -45,6 +46,7 @@ public class Location {
             joinColumns = {@JoinColumn(name = "location_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
+    @JsonIgnore
     private List<Event> events;
 
     public Location(Float lat, Float lon, String description) {
