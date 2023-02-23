@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "17e4634b-ed25-4740-b59b-2cbf745f4150",
+		"_postman_id": "76deb02e-74cf-47f9-9865-bb43e3ed8d70",
 		"name": "feature",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26015639"
 	},
 	"item": [
 		{
@@ -60,15 +61,14 @@
 							"const source = pm.collectionVariables.get('source');\r",
 							"\r",
 							"\r",
-							"pm.test(\"Локации должны содержать поля: lat, lon, description, events, id\", function () {\r",
-							"    pm.expect(target[0]).to.have.all.keys('lat', 'lon', 'description', 'events', 'id');\r",
+							"pm.test(\"Локации должны содержать поля: lat, lon, description, id, dtc, dtu\", function () {\r",
+							"    pm.expect(target[0]).to.have.all.keys('lat', 'lon', 'description', 'id', 'dtc', 'dtu');\r",
 							"});\r",
 							"\r",
 							"\r",
 							"pm.test(\"Проверка данных в ответе\", function(){\r",
 							"    pm.expect(source.location.lat).equal(target[0].lat);\r",
 							"    pm.expect(source.location.lon).equal(target[0].lon);\r",
-							"    pm.expect(source.description).equal(target[0].events[0].description);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -156,12 +156,11 @@
 							"const source = JSON.parse(pm.request.body.raw);\r",
 							"const target = pm.response.json();\r",
 							"\r",
-							"pm.test(\"Локация должна содержать поля: id, lat, lon, description, events\", function () {\r",
+							"pm.test(\"Локация должна содержать поля: id, lat, lon, description\", function () {\r",
 							"pm.expect(target).to.have.property('id');\r",
 							"pm.expect(target).to.have.property('lat');\r",
 							"pm.expect(target).to.have.property('lon');\r",
 							"pm.expect(target).to.have.property('description');\r",
-							"pm.expect(target).to.have.property('events');\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
@@ -169,7 +168,6 @@
 							"    pm.expect(target.lat).equal(source.lat);\r",
 							"    pm.expect(target.lon).equal(source.lon);\r",
 							"    pm.expect(target.description).equal(source.description);\r",
-							"    pm.expect(target.events).to.be.empty;\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -253,17 +251,18 @@
 							"\r",
 							"const target = pm.response.json();\r",
 							"const source = pm.collectionVariables.get('source');\r",
+							"const lat = pm.collectionVariables.get('lat');\r",
+							"const lon = pm.collectionVariables.get('lon');\r",
 							"\r",
 							"\r",
-							"pm.test(\"Локации должны содержать поля: lat, lon, description, events, id\", function () {\r",
-							"    pm.expect(target[0]).to.have.all.keys('lat', 'lon', 'description', 'events', 'id');\r",
+							"pm.test(\"Локации должны содержать поля: lat, lon, description, id, dtc, dtu\", function () {\r",
+							"    pm.expect(target[0]).to.have.all.keys('lat', 'lon', 'description', 'id', 'dtc', 'dtu');\r",
 							"});\r",
 							"\r",
 							"\r",
 							"pm.test(\"Проверка данных в ответе\", function(){\r",
-							"    pm.expect(source.location.lat).equal(target[0].lat);\r",
-							"    pm.expect(source.location.lon).equal(target[0].lon);\r",
-							"    pm.expect(source.description).equal(target[0].events[0].description);\r",
+							"    pm.expect(lat).equal(target[0].lat);\r",
+							"    pm.expect(lon).equal(target[0].lon);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -306,13 +305,13 @@
 						"exec": [
 							"const main = async () => {\r",
 							"    const rnd = new RandomUtils();\r",
-							"\r",
+							"    const api = new API(pm);\r",
 							"    let location;\r",
 							"    try {\r",
 							"        location = rnd.getLocation();\r",
 							"        let created_location = await api.addLocation(location);\r",
 							"        pm.collectionVariables.set(\"location_id\", created_location.id)\r",
-							"        let updated = {\r",
+							"        var updated = {\r",
 							"            id: created_location.id,\r",
 							"            description: pm.variables.replaceIn('{{$randomLoremParagraph}}')\r",
 							"        }\r",
@@ -350,8 +349,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-							"    pm.response.to.have.status(201);  \r",
+							"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+							"    pm.response.to.have.status(200);  \r",
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
 							"});\r",
@@ -364,7 +363,6 @@
 							"pm.expect(target).to.have.property('lat');\r",
 							"pm.expect(target).to.have.property('lon');\r",
 							"pm.expect(target).to.have.property('description');\r",
-							"pm.expect(target).to.have.property('events');\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",

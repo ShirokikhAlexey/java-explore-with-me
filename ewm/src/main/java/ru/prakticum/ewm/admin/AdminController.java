@@ -98,8 +98,8 @@ public class AdminController {
     }
 
     @GetMapping(value = "/locations")
-    public List<Location> getLocations(@RequestParam(required = false) Float lat,
-                                       @RequestParam(required = false) Float lon,
+    public List<Location> getLocations(@RequestParam Float lat,
+                                       @RequestParam Float lon,
                                        @RequestParam(defaultValue = "1", required = false) Integer from,
                                        @RequestParam(defaultValue = "10", required = false) Integer size) {
         return locationService.get(lat, lon, from, size);

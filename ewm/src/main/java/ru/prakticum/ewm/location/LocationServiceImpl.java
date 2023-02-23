@@ -16,7 +16,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Location> get(Float lat, Float lon, Integer from, Integer size) {
-        return repository.get(lat, lon, from, size);
+        return repository.getByCoordinates(lat, lon, PageRequest.of(from / size, size));
     }
 
     @Override
