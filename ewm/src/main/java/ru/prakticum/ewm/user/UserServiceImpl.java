@@ -15,6 +15,8 @@ import ru.prakticum.ewm.event.model.Status;
 import ru.prakticum.ewm.exception.ConflictException;
 import ru.prakticum.ewm.exception.InvalidEventException;
 import ru.prakticum.ewm.exception.NotFoundException;
+import ru.prakticum.ewm.location.LocationRepository;
+import ru.prakticum.ewm.location.model.Location;
 import ru.prakticum.ewm.user.dto.UserDtoMapper;
 import ru.prakticum.ewm.user.model.User;
 
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
+    private final LocationRepository locationRepository;
 
     @Override
     public List<EventDto> getUserEvents(Integer userId, Integer from, Integer size) {
@@ -74,6 +77,15 @@ public class UserServiceImpl implements UserService {
         if (eventDto.getEventDate().minusHours(2).isBefore(LocalDateTime.now())) {
             throw new ConflictException("Invalid event");
         }
+
+        List<Location> locations = locationRepository.getByCoordinates(eventDto.getLocation().getLat(), eventDto.getLocation().getLat());
+        if (locations.isEmpty()) {
+            Location saved = locationRepository.save(eventDto.getLocation());
+            eventDto.getLocation().setId(saved.getId());
+        } else {
+            eventDto.getLocation().setId(locations.get(0).getId());
+        }
+
         eventDto.setInitiator(UserDtoMapper.toDtoShort(initiator));
         eventDto.setState(Status.PENDING);
         return EventMapper.toDto(eventRepository.save(EventMapper.fromDto(eventDto)));

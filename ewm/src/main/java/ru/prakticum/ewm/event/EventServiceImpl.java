@@ -9,6 +9,8 @@ import ru.prakticum.ewm.event.model.Event;
 import ru.prakticum.ewm.event.model.Status;
 import ru.prakticum.ewm.exception.EventNotFoundException;
 import ru.prakticum.ewm.exception.InvalidEventException;
+import ru.prakticum.ewm.location.LocationRepository;
+import ru.prakticum.ewm.location.model.Location;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
     private final EventRepository repository;
+    private final LocationRepository locationRepository;
 
     @Override
     public EventDto create(EventShortDto eventDto) throws InvalidEventException {
@@ -27,6 +30,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto create(EventDto eventDto) throws InvalidEventException {
+        List<Location> locations = locationRepository.getByCoordinates(eventDto.getLocation().getLat(), eventDto.getLocation().getLat());
+        if (locations.isEmpty()) {
+            Location saved = locationRepository.save(eventDto.getLocation());
+            eventDto.getLocation().setId(saved.getId());
+        } else {
+            eventDto.getLocation().setId(locations.get(0).getId());
+        }
         return EventMapper.toDto(repository.save(EventMapper.fromDto(eventDto)));
     }
 

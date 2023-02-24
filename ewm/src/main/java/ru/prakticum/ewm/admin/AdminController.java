@@ -10,6 +10,8 @@ import ru.prakticum.ewm.category.dto.CategoryDto;
 import ru.prakticum.ewm.compilation.dto.CompilationDto;
 import ru.prakticum.ewm.compilation.dto.CompilationShortDto;
 import ru.prakticum.ewm.event.dto.EventDto;
+import ru.prakticum.ewm.location.LocationService;
+import ru.prakticum.ewm.location.model.Location;
 import ru.prakticum.ewm.user.dto.UserDto;
 
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequestMapping(path = "/admin")
 public class AdminController {
     private final AdminService adminService;
+    private final LocationService locationService;
 
     @GetMapping(value = "/events")
     public List<EventDto> get(@RequestParam(required = false) List<Integer> users,
@@ -92,5 +95,33 @@ public class AdminController {
     @PatchMapping(value = "/compilations/{compilationId}")
     public void updateCompilation(@PathVariable int compilationId, @RequestBody CompilationShortDto compilationShortDto) {
         adminService.updateCompilation(compilationId, compilationShortDto);
+    }
+
+    @GetMapping(value = "/locations")
+    public List<Location> getLocations(@RequestParam Float lat,
+                                       @RequestParam Float lon,
+                                       @RequestParam(defaultValue = "1", required = false) Integer from,
+                                       @RequestParam(defaultValue = "10", required = false) Integer size) {
+        return locationService.get(lat, lon, from, size);
+    }
+
+    @PostMapping(value = "/locations")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public Location addLocation(@RequestBody Location location) {
+        return locationService.create(location);
+    }
+
+    @PatchMapping(value = "/locations/{locationId}")
+    public Location updateLocation(@RequestBody Location location, @PathVariable int locationId) {
+        return locationService.update(locationId, location);
+    }
+
+    @GetMapping(value = "/locations/search")
+    public List<Location> searchLocations(@RequestParam Float lat,
+                                          @RequestParam Float lon,
+                                          @RequestParam(required = false, defaultValue = "1") Float radius,
+                                          @RequestParam(defaultValue = "1", required = false) Integer from,
+                                          @RequestParam(defaultValue = "10", required = false) Integer size) {
+        return locationService.search(lat, lon, radius, from, size);
     }
 }

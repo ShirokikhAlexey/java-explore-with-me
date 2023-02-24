@@ -9,6 +9,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import ru.prakticum.ewm.category.model.Category;
 import ru.prakticum.ewm.compilation.model.Compilation;
+import ru.prakticum.ewm.location.model.Location;
 import ru.prakticum.ewm.user.model.User;
 
 import javax.persistence.*;
@@ -56,7 +57,12 @@ public class Event {
     @JoinColumn(name = "author_id")
     private User initiator;
 
-    @OneToMany(mappedBy = "event")
+    @ManyToMany()
+    @JoinTable(
+            name = "event_location",
+            joinColumns = {@JoinColumn(name = "event_id")},
+            inverseJoinColumns = {@JoinColumn(name = "location_id")}
+    )
     private List<Location> locations;
 
     @NonNull
